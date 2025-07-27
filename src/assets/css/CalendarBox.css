@@ -1,0 +1,64 @@
+.calendar-wrapper {
+  margin-left: 70px;
+  padding: 20px;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  height: 500px;
+  display: block;
+}
+
+.custom-calendar {
+  border: none;
+  width: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 20px;
+}
+
+.custom-calendar .react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 30px 0;
+  height: 100px;
+}
+
+.custom-calendar .react-calendar__tile {
+  border-radius: 8px;
+  padding: 10px 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+.custom-calendar .react-calendar__tile:hover {
+  background: #f0f0f0;
+}
+
+.custom-calendar .react-calendar__tile--active {
+  background: #000000;
+  color: white;
+}
+
+.custom-calendar .react-calendar__tile--now {
+  background: #e0e0e0;
+  font-weight: bold;
+}
+
+/* 요일 머리글 색상 */
+.custom-calendar .react-calendar__month-view__weekdays__weekday:nth-child(1) {
+  color: red; /* 일요일 */
+}
+
+.custom-calendar .react-calendar__month-view__weekdays__weekday:nth-child(7) {
+  color: blue; /* 토요일 */
+}
+
+/* 날짜 셀 일요일: 7n + 1 번째 */
+.custom-calendar .react-calendar__month-view__days__day:nth-child(7n + 1) {
+  color: red;
+}
+
+/* 날짜 셀 토요일: 7n 번째 */
+.custom-calendar .react-calendar__month-view__days__day:nth-child(7n) {
+  color: blue;
+}
