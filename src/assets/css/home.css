@@ -1,0 +1,79 @@
+.image-placeholder {
+  width: 100%;
+  height: 400px;
+  margin: 20px auto;
+  border: 2px dashed #999;
+  border-radius: 12px;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #666;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+
+/* "나의 팀" 영역 */
+.my-team-section {
+  padding: 30px 70px;
+}
+
+
+/* 마이팀 */
+.myteam-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 여전히 3열 */
+  gap: 20px;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+
+/* 팀 카드 */
+.team-card {
+  width: 300px;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 0 50px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.team-title {
+  margin: 0 0 10px;
+}
+
+.team-description {
+  font-size: 16px;
+  color: #555;
+}
+
+.team-tags-container {
+  margin: 15px 0;
+}
+
+.team-tag {
+  display: inline-block;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  padding: 5px 12px;
+  margin: 0 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.team-button {
+  background-color: #000000;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
