@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Home from "./pages/home/Home";
 import Login from "./pages/auth/Login";
 import FindId from "./pages/auth/FindId";
-import MeetingMinuteList from "./pages/team/MeetingMinuteList";
+import MeetingMinuteList from "./pages/team/MeetingMinutes/MeetingMinuteList";
 import WhenToMeetList from "./pages/team/WhenToMeetList";
 import "./App.css";
 
