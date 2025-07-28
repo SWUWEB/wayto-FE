@@ -4,6 +4,7 @@ import Login from "./pages/auth/Login";
 import FindId from "./pages/auth/FindId";
 import MeetingMinuteList from "./pages/team/MeetingMinuteList";
 import WhenToMeetList from "./pages/team/WhenToMeetList";
+import Calendar from "./pages/home/Calendar";
 import "./App.css";
 
 function App() {
@@ -12,6 +13,8 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/calendar" element={<Calendar />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/find-id" element={<FindId />} />
 
