@@ -29,3 +29,14 @@
   font-weight: 500;
   font-size: 16px;
 }
+
+/* 팀 생성하기 팝업 */
+.nav-link.clickable {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav-link.clickable:hover {
+  text-decoration: underline;
+}

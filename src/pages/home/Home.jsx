@@ -1,10 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Header from '../../components/Header';
+import Myteam from './team/Myteam';
+import CalendarBox from './CalendarBox';
+import CreateTeamModal from './CreateTeamModal';
+import TeammateModal from './TeammateModal';
+import '../../assets/css/home.css';
 
 const Home = () => {
+  const [teams, setTeams] = useState([
+    
+  ]);
+
+  const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
+  const [showTeammateModal, setShowTeammateModal] = useState(false);
+
+  const handleCreateTeam = (newTeam) => {
+    const newTeamWithId = {
+      ...newTeam,
+      id: Date.now(),
+      pageUrl: `/team${teams.length + 1}`,
+    };
+    setTeams([...teams, newTeamWithId]);
+    setShowCreateTeamModal(false);
+    setShowTeammateModal(true); // 필요 시 팀원 추가로 이동
+  };
+
   return (
     <div>
-      <h1>홈페이지에 오신 것을 환영합니다!</h1>
-      <p>이곳은 기본 Home 페이지입니다.</p>
+      <Header onCreateTeamClick={() => setShowCreateTeamModal(true)} />
+
+      <CreateTeamModal 
+        isOpen={showCreateTeamModal} 
+        onClose={() => setShowCreateTeamModal(false)}
+        onCreate={handleCreateTeam}
+      />
+
+      <TeammateModal 
+        isOpen={showTeammateModal}
+        onClose={() => setShowTeammateModal(false)}
+      />
+
+      <div className="image-placeholder">여기에 이미지가 들어갈 예정입니다</div>
+
+      <CalendarBox />
+
+      <div className="my-team-section">
+        <h2>나의 팀</h2>
+        <Myteam teams={teams} />
+      </div>
     </div>
   );
 };
