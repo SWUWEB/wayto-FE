@@ -130,10 +130,17 @@
 
 .cancel {
   background-color: #ddd;
-  color: black;
+  color: #f5f5f5;
 }
 
 .submit {
   background-color: black;
   color: white;
+}
+
+.page-footer.normal-footer {
+  background-color: #eee;
+  height: 100px;
+  width: 100%;
+  position: static;
 }
