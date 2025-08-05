@@ -6,6 +6,8 @@ import FindPw from './pages/auth/FindPw';
 import Signup from "./pages/auth/Signup";
 import MeetingMinuteList from './pages/team/MeetingMinuteList';
 import WhenToMeetList from "./pages/team/WhenToMeetList";
+import WhenToMeetCreation from "./pages/team/WhenToMeetCreation";
+import WhenToMeetVote from "./pages/team/WhenToMeetVote";
 import Calendar from "./pages/home/Calendar";
 import "./App.css";
 
@@ -26,6 +28,8 @@ function App() {
           <Route path="/team" element={<Navigate to="/team/meeting" replace />} />
           <Route path="/team/meeting" element={<MeetingMinuteList />} />
           <Route path="/team/wentomeet" element={<WhenToMeetList />} />
+          <Route path="/team/wentomeet/wentomeetcreation" element={<WhenToMeetCreation />} />
+          <Route path="/team/wentomeet/whentomeetvote" element={<WhenToMeetVote />} />
 
           {/* <Route path="/team/members" element={<MemberManagementPage />} />
           <Route path="/team/settings" element={<TeamSettingsPage />} /> */}
