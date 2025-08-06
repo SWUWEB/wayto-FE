@@ -13,7 +13,8 @@ import InquirySuccess from './pages/mypage/InquirySuccess';
 import LeaveSuccess from './pages/mypage/LeaveSuccess';
 import MeetingMinuteList from './pages/team/MeetingMinuteList';
 import WhenToMeetList from "./pages/team/WhenToMeetList";
-import './App.css';
+import Calendar from "./pages/home/Calendar";
+import "./App.css";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/calendar" element={<Calendar />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/findid" element={<FindId />} />
           <Route path="/findpw" element={<FindPw />} />
