@@ -8,6 +8,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 25px 30px;
+  margin-bottom: 16px;
   box-sizing: border-box;
   box-shadow: 0px 4px 2px 0px rgba(0, 0, 0, 0.25);
 }
@@ -36,7 +37,7 @@
 }
 
 .when-title {
-  font-size: 25px;
+  font-size: 24px;
   font-weight: bold;
 }
 
@@ -54,8 +55,8 @@
 }
 
 .enter-button {
-  width: 190px;
-  height: 51px;
+  width: 170px;
+  height: 40px;
   border-radius: 48px;
   background-color: #090A0A;
   color: #fff;
