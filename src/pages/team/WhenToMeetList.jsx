@@ -1,9 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import TeamPageWrapper from './TeamPageWrapper';
 import WhenToMeet from '../../components/WhenToMeet.jsx';
 import '../../assets/css/WhenToMeetList.css';
 
 const WhenToMeetList = () => {
+  const navigate = useNavigate(); 
+
   return (
     <TeamPageWrapper initialTab="웬투밋">
       <div className="when-to-meet-list-section">
@@ -60,13 +63,17 @@ const WhenToMeetList = () => {
         </div>
 
         <div className="create-button-wrapper">
-          <button className="create-button">웬투밋 생성하기</button>
+          <button
+            className="create-button"
+            onClick={() => navigate('/team/wentomeet/wentomeetcreation')} 
+          >
+            웬투밋 생성하기
+          </button>
         </div>
       </div>
-      <div class="bottom-box"></div>
+      <div className="bottom-box"></div>
     </TeamPageWrapper>
   );
 };
 
 export default WhenToMeetList;
-

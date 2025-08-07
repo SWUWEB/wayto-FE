@@ -1,9 +1,15 @@
-import React from 'react';
-import "../../assets/css/signup.css";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import "../../assets/css/userinfoedit.css";
+import "../../assets/css/userinfoeditleave.css";
+import teamLogo from '../../assets/images/teamLogo.png';
+import UserInfoEditLeave from './UserInfoEditLeave';
 
-const Signup = () => {
+const UserInfoEdit = () => {
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper userinfoedit-page">
       <nav className="navbar">
         <div className="navbar-left">
           <img src="/wayto.svg" alt="logo" className="navbar-logo" />
@@ -11,14 +17,31 @@ const Signup = () => {
         </div>
         <div className="navbar-right">
           <a href="/">홈</a>
+          <a href="/calendar">내 캘린더</a>
+          <a href="/team">팀 생성하기</a>
+          <a href="/mypage" className="active">마이페이지</a>
         </div>
       </nav>
 
+      <div className="teamHeader__header-container">
+        <img src={teamLogo} alt="team logo" className="teamHeader__logo" />
+        <div className="teamHeader__info">
+          <h1 className="teamHeader__team-name">회원 이름입니다.</h1>
+          <p className="teamHeader__description">
+            반갑습니다, ○○○님.<br />
+            웨이투회의를 통해 팀을 만들고, 일정을 조율해 보세요.
+          </p>
+        </div>
+      </div>
+
+      <div className="teamHeader__tab-container">
+        <button className="teamHeader__tab teamHeader__active">회원 정보</button>
+        <button className="teamHeader__tab">1:1 문의</button>
+      </div>
+
       <div className="signup-wrapper">
         <header className="signup-header">
-          <img src="/wayto.svg" alt="logo" className="logo" />
-          <h1>회원가입</h1>
-          <p>웨이투회의 회원이 되어주세요.</p>
+          <h1>회원 정보 수정</h1>
         </header>
 
         <form className="signup-form">
@@ -77,15 +100,21 @@ const Signup = () => {
           <span className="alert">* 안내메시지입니다.</span>
 
           <div className="button-box">
-            <button className="cancel">취소</button>
-            <button className="submit">회원가입</button>
+            <button type="button" className="cancel" onClick={() => setShowLeaveModal(true)}>
+              회원탈퇴
+            </button>
+            <button className="submit">수정</button>
           </div>
         </form>
       </div>
 
       <div className="page-footer normal-footer" />
+
+      {showLeaveModal && (
+        <UserInfoEditLeave onClose={() => setShowLeaveModal(false)} />
+      )}
     </div>
   );
 };
 
-export default Signup;
+export default UserInfoEdit;
