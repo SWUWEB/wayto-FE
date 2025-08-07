@@ -37,7 +37,6 @@ function App() {
           <Route path="/inquirymain" element={<InquiryMain />} />
           <Route path="/inquirysuccess" element={<InquirySuccess />} />
           <Route path="/leavesuccess" element={<LeaveSuccess />} />
-          <Route path="/meeting-minutes" element={<MeetingMinuteList />} />
 
           <Route path="/team" element={<Navigate to="/team/meeting" replace />} />
           <Route path="/team/meeting" element={<MeetingMinuteList />} />

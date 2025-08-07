@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Header from '../../components/header';
+import Header from '../../components/Header';
 import '../../assets/css/calendar.css';
 import dropdownIcon from '../../assets/images/Dropdown.png';
 import dropupIcon from '../../assets/images/Dropup.png';
@@ -30,7 +30,7 @@ const Calendar = () => {
     <>
       <Header />
         <div className="calendar-container">
-          <h2 className="calendar-title">6월</h2>
+          <h3 className="calendar-title">6월</h3>
           <div className="calendar-grid">
             {days.map((day, idx) => (
               <div key={idx} className="calendar-day">

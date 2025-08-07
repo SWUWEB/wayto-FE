@@ -18,9 +18,9 @@ const Header = ({ onCreateTeamClick = () => {} }) => {
           <a href="/calendar" className="header__link">
             내 캘린더
           </a>
-          <span onClick={onCreateTeamClick} className="nav-link clickable">
+          <a onClick={onCreateTeamClick} className="nav-link clickable">
           팀 생성하기
-          </span>
+          </a>
           <a href="/mypage" className="header__link">
             마이페이지
           </a>
