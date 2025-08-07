@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../assets/css/createteam.css';
-import mainLogo from '../../assets/images/mainLogo.png';
+import teamLogo from '../../assets/images/teamLogo.png';
 
 const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
   const [name, setName] = useState('');
@@ -37,7 +37,7 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <img src={mainLogo} alt="로고" className="modal-logo" />
+        <img src={teamLogo} alt="로고" className="modal-logo" />
         <h2>새로운 팀을 생성하시겠습니까?</h2>
 
         <input

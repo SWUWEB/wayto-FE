@@ -1,0 +1,10 @@
+.meeting-list-wrapper {
+  padding: 20px;
+  max-width: 500px;
+}
+
+.meeting-list-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}

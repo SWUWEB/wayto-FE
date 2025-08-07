@@ -4,13 +4,11 @@ import Myteam from './team/Myteam';
 import CalendarBox from './CalendarBox';
 import CreateTeamModal from './CreateTeamModal';
 import TeammateModal from './TeammateModal';
+import MeetingList from './MeetingList';
 import '../../assets/css/home.css';
 
 const Home = () => {
-  const [teams, setTeams] = useState([
-    
-  ]);
-
+  const [teams, setTeams] = useState([]);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [showTeammateModal, setShowTeammateModal] = useState(false);
 
@@ -42,7 +40,12 @@ const Home = () => {
 
       <div className="image-placeholder">여기에 이미지가 들어갈 예정입니다</div>
 
-      <CalendarBox />
+      <div className="calendar-meeting-container">
+        <CalendarBox />
+        <div className="meeting-wrapper">
+          <MeetingList />
+        </div>
+      </div>
 
       <div className="my-team-section">
         <h2>나의 팀</h2>
