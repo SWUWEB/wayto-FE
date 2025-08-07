@@ -1,19 +1,22 @@
 .calendar-wrapper {
+  margin-top: 30px;
   margin-left: 70px;
   padding: 20px;
   border-radius: 16px;
   background: white;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  width: 500px;
-  height: 500px;
+  box-shadow: 0px 4px 2px 0px rgba(0, 0, 0, 0.25);
+  width: 600px;
+  height: 565px;
   display: block;
+  min-width: 500px;
+  box-sizing: border-box;
 }
 
 .custom-calendar {
   border: none;
   width: 100%;
   font-family: 'Noto Sans KR', sans-serif;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .custom-calendar .react-calendar__navigation {
@@ -26,7 +29,7 @@
 
 .custom-calendar .react-calendar__tile {
   border-radius: 8px;
-  padding: 10px 0;
+  padding: 16px 0;
   transition: background 0.3s, color 0.3s;
 }
 
@@ -53,12 +56,25 @@
   color: blue; /* 토요일 */
 }
 
-/* 날짜 셀 일요일: 7n + 1 번째 */
+/* 날짜 셀 일요일 */
 .custom-calendar .react-calendar__month-view__days__day:nth-child(7n + 1) {
   color: red;
 }
 
-/* 날짜 셀 토요일: 7n 번째 */
+/* 날짜 셀 토요일 */
 .custom-calendar .react-calendar__month-view__days__day:nth-child(7n) {
   color: blue;
+}
+
+/* 회의 있는 날짜 표시용 큰 원 스타일 */
+.pink-circle {
+  background-color: #f9c6c7 !important;
+  border-radius: 50% !important;
+  color: #000 !important;
+}
+
+.yellow-circle {
+  background-color: #f9f5c7 !important;
+  border-radius: 50% !important;
+  color: #000 !important;
 }

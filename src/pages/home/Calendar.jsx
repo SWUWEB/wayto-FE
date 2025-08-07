@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Header from '../../components/header';
+import Header from '../../components/Header';
 import '../../assets/css/calendar.css';
 import dropdownIcon from '../../assets/images/Dropdown.png';
 import dropupIcon from '../../assets/images/Dropup.png';
