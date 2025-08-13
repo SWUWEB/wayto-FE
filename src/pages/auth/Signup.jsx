@@ -1,26 +1,23 @@
-import React from 'react';
+import React from "react";
 import "../../assets/css/signup.css";
+import Header from "../../components/Header";
+import teamLogo from "../../assets/images/teamLogo.png"; // 로그인과 동일 로고 사용
 
 const Signup = () => {
   return (
     <div className="page-wrapper">
-      <nav className="navbar">
-        <div className="navbar-left">
-          <img src="/wayto.svg" alt="logo" className="navbar-logo" />
-          <span className="navbar-title">웨이투회의</span>
-        </div>
-        <div className="navbar-right">
-          <a href="/">홈</a>
-        </div>
-      </nav>
+      {/* 공통 네비게이션바 */}
+      <Header />
 
+      {/* 본문 */}
       <div className="signup-wrapper">
         <header className="signup-header">
-          <img src="/wayto.svg" alt="logo" className="logo" />
+          <img src={teamLogo} alt="logo" className="logo" /> {/* 로고 교체 */}
           <h1>회원가입</h1>
           <p>웨이투회의 회원이 되어주세요.</p>
         </header>
 
+        {/* 폼: 로그인과 동일 폭/간격 규칙 */}
         <form className="signup-form">
           <label>이름 *</label>
           <input type="text" placeholder="김뫄뫄" />
@@ -56,15 +53,9 @@ const Signup = () => {
 
           <label>생년월일 *</label>
           <div className="birth-box">
-            <select>
-              <option>2000</option>
-            </select>
-            <select>
-              <option>00</option>
-            </select>
-            <select>
-              <option>00</option>
-            </select>
+            <select><option>2000</option></select>
+            <select><option>00</option></select>
+            <select><option>00</option></select>
           </div>
           <span className="alert">* 안내메시지입니다.</span>
 
@@ -76,13 +67,15 @@ const Signup = () => {
           </select>
           <span className="alert">* 안내메시지입니다.</span>
 
+          {/* 버튼 영역: 로그인과 동일 폭 규칙(90%/600) + 위 여백 20px */}
           <div className="button-box">
-            <button className="cancel">취소</button>
-            <button className="submit">회원가입</button>
+            <button type="button" className="cancel">취소</button>
+            <button type="submit" className="submit">회원가입</button>
           </div>
         </form>
       </div>
 
+      {/* 공통 푸터 */}
       <div className="page-footer normal-footer" />
     </div>
   );
