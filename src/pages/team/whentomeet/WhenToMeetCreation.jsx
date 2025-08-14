@@ -11,7 +11,6 @@ import UncheckedBox from '../../../assets/images/Uncheckedbox.png';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import TimePicker from 'react-time-picker';
 
 const WhenToMeetCreation = () => {
   const navigate = useNavigate(); 
@@ -29,13 +28,27 @@ const WhenToMeetCreation = () => {
   // 날짜/시간 상태
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [startTime, setStartTime] = useState('17:00');
-  const [endTime, setEndTime] = useState('24:00');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+
+  // 모달 상태
+  const [timeModal, setTimeModal] = useState({ open: false, target: null });
 
   const startDateRef = useRef();
   const endDateRef = useRef();
-  const startTimeRef = useRef();
-  const endTimeRef = useRef();
+
+  // 시간 리스트 생성 (1시간 단위)
+  const times = [];
+  for (let h = 0; h < 24; h++) {
+    const hh = String(h).padStart(2, '0');
+    times.push(`${hh}:00`);
+  }
+
+  const selectTime = (time) => {
+    if (timeModal.target === 'start') setStartTime(time);
+    else setEndTime(time);
+    setTimeModal({ open: false, target: null });
+  };
 
   return (
     <TeamPageWrapper initialTab="웬투밋">
@@ -84,33 +97,57 @@ const WhenToMeetCreation = () => {
         <div className="w2m-section w2m-align-left">
           <label className="w2m-label">시간 설정</label>
           <div className="w2m-range-box">
-            <div className="w2m-time-box" onClick={() => startTimeRef.current.openClock()}>
-              <input type="text" value={startTime} readOnly />
+            
+            {/* 시작 시간 */}
+            <div
+              className="w2m-time-box"
+              onClick={() =>
+                setTimeModal(prev => ({
+                  open: !(prev.open && prev.target === 'start'),
+                  target: 'start'
+                }))
+              }
+            >
+              <input type="text" value={startTime} readOnly placeholder="시작 시간" />
               <img src={ClockIcon} alt="시계" />
-              <TimePicker
-                ref={startTimeRef}
-                onChange={setStartTime}
-                value={startTime}
-                disableClock={true}
-                clearIcon={null}
-                format="HH:mm"
-                className="hidden-timepicker"
-              />
+
+              {timeModal.open && timeModal.target === 'start' && (
+                <div className="time-modal">
+                  {times.map((t) => (
+                    <div key={t} className="time-option" onClick={() => selectTime(t)}>
+                      {t}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+
             <span className="w2m-range-dash">—</span>
-            <div className="w2m-time-box" onClick={() => endTimeRef.current.openClock()}>
-              <input type="text" value={endTime} readOnly />
+
+            {/* 종료 시간 */}
+            <div
+              className="w2m-time-box"
+              onClick={() =>
+                setTimeModal(prev => ({
+                  open: !(prev.open && prev.target === 'end'),
+                  target: 'end'
+                }))
+              }
+            >
+              <input type="text" value={endTime} readOnly placeholder="종료 시간" />
               <img src={ClockIcon} alt="시계" />
-              <TimePicker
-                ref={endTimeRef}
-                onChange={setEndTime}
-                value={endTime}
-                disableClock={true}
-                clearIcon={null}
-                format="HH:mm"
-                className="hidden-timepicker"
-              />
+
+              {timeModal.open && timeModal.target === 'end' && (
+                <div className="time-modal">
+                  {times.map((t) => (
+                    <div key={t} className="time-option" onClick={() => selectTime(t)}>
+                      {t}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+
           </div>
         </div>
 
