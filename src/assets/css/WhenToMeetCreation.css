@@ -188,3 +188,22 @@
   height: 20px;
   margin-left: 15px; 
 }
+
+.hidden-datepicker,
+.hidden-timepicker {
+  display: none;
+}
+
+.w2m-time-box input {
+  border: none;
+  background-color: transparent;
+  font-size: 15px;
+  color: #9e9e9e;
+  width: 100%;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.w2m-date-box input:not([value=""]) {
+  color: #000;
+}

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import TeamPageWrapper from './TeamPageWrapper';
-import WhenToMeet from '../../components/WhenToMeet.jsx';
-import '../../assets/css/WhenToMeetList.css';
+import TeamPageWrapper from '.././TeamPageWrapper';
+import WhenToMeet from '../../../components/WhenToMeet.jsx';
+import '../../../assets/css/WhenToMeetList.css';
 
 const WhenToMeetList = () => {
   const navigate = useNavigate(); 
