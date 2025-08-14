@@ -9,12 +9,15 @@ const Myteam = ({ teams }) => {
   };
 
   return (
+  <section className="myteam-section">
+    <h2 className="myteam-title">나의 팀</h2>
     <div className="myteam-container">
       {teams.map((team) => (
         <TeamCard key={team.id} team={team} onNavigate={handleNavigate} />
       ))}
     </div>
-  );
+  </section>
+);
 };
 
 export default Myteam;

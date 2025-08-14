@@ -71,10 +71,20 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
           <button className="modal-add-button" onClick={handleAddTag}>+</button>
         </div>
         <div className="tag-preview">
-          {tags.map((tag, index) => (
-            <span key={index} className="team-tag">{tag}</span>
-          ))}
-        </div>
+  {tags.map((tag, index) => (
+    <span key={index} className="team-tag">
+      {tag}
+      <button
+        className="tag-remove-btn"
+        onClick={() => {
+          setTags(tags.filter((_, i) => i !== index));
+        }}
+      >
+        ×
+      </button>
+    </span>
+  ))}
+</div>
         <button className="modal-button" onClick={handleCreate}>생성하기</button>
       </div>
     </div>
