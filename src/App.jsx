@@ -8,9 +8,9 @@ import UserInfoPwCheck from './pages/mypage/userinfo/UserInfoPwCheck';
 import UserInfoEdit from './pages/mypage/userinfo/UserInfoEdit';
 import InquiryMain from './pages/mypage/Inquiry/InquiryMain';
 import MeetingMinuteList from './pages/team/MeetingMinuteList';
-import WhenToMeetList from "./pages/team/WhenToMeetList";
-import WhenToMeetCreation from "./pages/team/WhenToMeetCreation";
-import WhenToMeetVote from "./pages/team/WhenToMeetVote";
+import WhenToMeetList from "./pages/team/whentomeet/WhenToMeetList";
+import WhenToMeetCreation from "./pages/team/whentomeet/WhenToMeetCreation";
+import WhenToMeetVote from "./pages/team/whentomeet/WhenToMeetVote";
 import Calendar from "./pages/home/Calendar";
 import "./App.css";
 
