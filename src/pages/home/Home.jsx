@@ -20,7 +20,7 @@ const Home = () => {
     };
     setTeams([...teams, newTeamWithId]);
     setShowCreateTeamModal(false);
-    setShowTeammateModal(true); // 필요 시 팀원 추가로 이동
+    setShowTeammateModal(true);
   };
 
   return (
@@ -47,10 +47,8 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="my-team-section">
-        <h2>나의 팀</h2>
-        <Myteam teams={teams} />
-      </div>
+      <Myteam teams={teams} />
+      
     </div>
   );
 };

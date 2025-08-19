@@ -1,14 +1,14 @@
 .when-box {
   position: relative; 
-  width: 600px;
-  height: 160px;
+  width: 450px;
+  height: 130px;
   border-radius: 10px;
   background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 25px 30px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   box-sizing: border-box;
   box-shadow: 0px 4px 2px 0px rgba(0, 0, 0, 0.25);
 }
@@ -37,7 +37,7 @@
 }
 
 .when-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
+  font-size: 14px;
   color: #202020;
 }
 
@@ -55,12 +55,12 @@
 }
 
 .enter-button {
-  width: 170px;
-  height: 40px;
+  width: 130px;
+  height: 35px;
   border-radius: 48px;
   background-color: #090A0A;
   color: #fff;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   margin-top: 50px;
   z-index: 10; 
