@@ -1,16 +1,19 @@
 .calendar-container {
-  max-width: 800px;
   height: auto;
+  width: 900px;
   background-color: #F8F8F8;
-  padding: 30px;
+  padding: 20px;
   box-sizing: border-box;
-  margin: 120px auto 0 auto;
+  margin: 0 auto;
+  margin-top: 80px;
+  border-radius: 10px;
+  margin-bottom: 50px;
 }
 
 .calendar-title {
-  font-size: 25px;
+  font-size: 28px;
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .calendar-grid {
@@ -18,24 +21,22 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 20px;
   justify-items: center;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .calendar-day {
-  font-size: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  font-size: 18px;
   font-weight: bold;
   color: #333;
 }
 
 .calendar-cell {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 16px;
   border-radius: 50%;
 }
 
@@ -54,11 +55,11 @@
 }
 
 .dropdown-container {
-  margin-top: 40px;
+  margin-top: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
 }
 
@@ -68,13 +69,14 @@
 }
 
 .dropdown-box {
+  width: 96%;
   border: 1px solid #B5B5B5;
   background-color: #FFFFFF;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  border-radius: 10px;
-  padding: 12px 16px;
+  border-radius: 8px;
+  padding: 10px 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,33 +85,27 @@
 .dropdown-content {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 15px;
-  max-width: 800px;
-  width: 100%; /* 수정됨 */
+  gap: 6px;
+  margin-top: 10px;
+  width: 100%;
 }
 
 .dropdown-item {
   background-color: #E8E8E8;
   border: 1px solid #B5B5B5;
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-size: 16px;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
   font-weight: 400;
 }
 
-.dropdown-icon {
-  width: 10px;
-  height: 10px;
-}
-
 .dropdown-icon.small {
-  width: 12px;
-  height: 7px;
+  width: 10px;
+  height: 6px;
 }
 
 .bottom-box {
-  height: 180px;
+  height: 150px;
   background-color: #EBEBEB;
-  margin-top: 100px;
+  margin-top: 80px;
 }

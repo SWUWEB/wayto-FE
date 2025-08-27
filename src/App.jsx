@@ -4,17 +4,13 @@ import Login from "./pages/auth/Login";
 import FindId from "./pages/auth/FindId";
 import FindPw from './pages/auth/FindPw';
 import Signup from "./pages/auth/Signup";
-import UserInfoPwError from './pages/mypage/UserInfoPwError';
-import UserInfoPwCheck from './pages/mypage/UserInfoPwCheck';
-import UserInfoEditSuccess from './pages/mypage/UserInfoEditSuccess';
-import UserInfoEdit from './pages/mypage/UserInfoEdit';
-import InquiryMain from './pages/mypage/InquiryMain';
-import InquirySuccess from './pages/mypage/InquirySuccess';
-import LeaveSuccess from './pages/mypage/LeaveSuccess';
-import MeetingMinuteList from "./pages/team/MeetingMinutes/MeetingMinuteList";
-import WhenToMeetList from "./pages/team/WhenToMeetList";
-import WhenToMeetCreation from "./pages/team/WhenToMeetCreation";
-import WhenToMeetVote from "./pages/team/WhenToMeetVote";
+import UserInfoPwCheck from './pages/mypage/userinfo/UserInfoPwCheck';
+import UserInfoEdit from './pages/mypage/userinfo/UserInfoEdit';
+import InquiryMain from './pages/mypage/Inquiry/InquiryMain';
+import MeetingMinuteList from './pages/team/MeetingMinuteList';
+import WhenToMeetList from "./pages/team/whentomeet/WhenToMeetList";
+import WhenToMeetCreation from "./pages/team/whentomeet/WhenToMeetCreation";
+import WhenToMeetVote from "./pages/team/whentomeet/WhenToMeetVote";
 import Calendar from "./pages/home/Calendar";
 import CreateMeetingMinute from "./pages/team/MeetingMinutes/CreateMeetingMinute/CreateMeetingMinute";
 import MeetingMinuteView from "./pages/team/MeetingMinutes/MeetingMinuteView";
@@ -32,14 +28,12 @@ function App() {
           <Route path="/findid" element={<FindId />} />
           <Route path="/findpw" element={<FindPw />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/userinfopwerror" element={<UserInfoPwError />} />
-          <Route path="/userinfopwcheck" element={<UserInfoPwCheck />} />
-          <Route path="/userinfoeditsuccess" element={<UserInfoEditSuccess />} />
-          <Route path="/userinfoedit" element={<UserInfoEdit />} />
-          <Route path="/inquirymain" element={<InquiryMain />} />
-          <Route path="/inquirysuccess" element={<InquirySuccess />} />
-          <Route path="/leavesuccess" element={<LeaveSuccess />} />
 
+          <Route path="/mypage/userInfo/pwCheck" element={<UserInfoPwCheck />} />
+          <Route path="/mypage/userInfo/edit" element={<UserInfoEdit />} />
+          <Route path="/mypage/Inquiry" element={<InquiryMain />} />
+
+          <Route path="/meeting-minutes" element={<MeetingMinuteList />} />
           <Route path="/team" element={<Navigate to="/team/meeting" replace />} />
           <Route path="/team/meeting" element={<MeetingMinuteList />} />
           <Route path="/team/wentomeet" element={<WhenToMeetList />} />
