@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import TeamPageWrapper from "../TeamPageWrapper";
 import MeetingMinuteItem from "./MeetingMinuteItem";
 import "../../../assets/css/MeetingMinute.css";
@@ -55,6 +56,7 @@ const meetings = [
 ];
 
 const MeetingMinuteList = () => {
+  const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(4);
 
   const handleView = (id) => {
@@ -67,12 +69,16 @@ const MeetingMinuteList = () => {
 
   const visibleMeetings = meetings.slice(0, visibleCount);
 
+  const handleCreateClick = () => {
+    navigate('/createMeetingMinute');
+  };
+
   return (
     <TeamPageWrapper initialTab="회의록">
       <div className="MML__wrapper">
         <div className="MML__header">
           <h2 className="MML__headerTitle">회의록</h2>
-          <button className="MML__writeButton">회의록 작성</button>
+          <button className="MML__writeButton" onClick={handleCreateClick}>회의록 작성</button>
         </div>
 
         <div className="MML__meetingList">

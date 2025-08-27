@@ -1,0 +1,171 @@
+.MMV__container {
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.MMV__content {
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 900px;
+  margin: 60px auto;
+}
+
+.MMV__view {
+  padding: 0 40px;
+}
+
+.MMV__titleRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.MMV__backBtn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.MMV__field {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  gap: 16px;
+}
+
+.MMV__label {
+  flex: 0 0 80px;
+  font-weight: 600;
+  color: #6e6e6e;
+}
+
+.MMV__attendees {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.MMV__attendee {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f1f1;
+  font-size: 14px;
+  padding: 7px 9px;
+  border-radius: 50px;
+}
+
+.MMV__circle {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.MMV__editor {
+  width: 100%;
+  min-height: 200px;
+  padding: 0 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.MMV__editor .ProseMirror {
+  outline: none;
+  min-height: 180px;
+  font-size: 14px;
+  line-height: 0.8;
+}
+
+.MMV__editor .ProseMirror h1,
+.MMV__editor .ProseMirror h2,
+.MMV__editor .ProseMirror h3 {
+  font-weight: bold;
+  margin: 0.5em 0;
+}
+
+.MMV__editor .ProseMirror h1 {
+  font-size: 1.8em;
+}
+
+.MMV__editor .ProseMirror h2 {
+  font-size: 1.5em;
+}
+
+.MMV__editor .ProseMirror h3 {
+  font-size: 1.3em;
+}
+
+.MMV__editor .ProseMirror ul,
+.MMV__editor .ProseMirror ol {
+  padding-left: 20px;
+}
+
+.MMV__editor .ProseMirror ul {
+  list-style: disc;
+}
+
+.MMV__editor .ProseMirror ol {
+  list-style: decimal;
+}
+
+.MMV__editor .ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.MMV__editor .ProseMirror ul[data-type="taskList"] li {
+  display: flex;
+  align-items: center;
+}
+
+.MMV__editor .ProseMirror ul[data-type="taskList"] li input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.MMV__editor .ProseMirror mark[data-color] {
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+
+/* 하이라이트 색상별 스타일 */
+.MMV__editor .ProseMirror mark[data-color="#d9f0dd"] {
+  background-color: #d9f0dd !important;
+}
+
+.MMV__editor .ProseMirror mark[data-color="#d9eaf7"] {
+  background-color: #d9eaf7 !important;
+}
+
+.MMV__editor .ProseMirror mark[data-color="#f9d9d9"] {
+  background-color: #f9d9d9 !important;
+}
+
+.MMV__editor .ProseMirror mark[data-color="#f4e1f9"] {
+  background-color: #f4e1f9 !important;
+}
+
+.MMV__editor .ProseMirror mark[data-color="#fff9d9"] {
+  background-color: #fff9d9 !important;
+}
+
+.MMV__datetime {
+  display: flex;
+  align-items: center;
+}
+
+.MMV__datetime-inputs {
+  display: flex;
+  gap: 5px;
+}
+
+.MMV__dateInput,
+.MMV__timeInput {
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 400;
+}

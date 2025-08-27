@@ -16,6 +16,8 @@ import WhenToMeetList from "./pages/team/WhenToMeetList";
 import WhenToMeetCreation from "./pages/team/WhenToMeetCreation";
 import WhenToMeetVote from "./pages/team/WhenToMeetVote";
 import Calendar from "./pages/home/Calendar";
+import CreateMeetingMinute from "./pages/team/MeetingMinutes/CreateMeetingMinute/CreateMeetingMinute";
+import MeetingMinuteView from "./pages/team/MeetingMinutes/MeetingMinuteView";
 import "./App.css";
 
 function App() {
@@ -44,8 +46,10 @@ function App() {
           <Route path="/team/wentomeet/wentomeetcreation" element={<WhenToMeetCreation />} />
           <Route path="/team/wentomeet/whentomeetvote" element={<WhenToMeetVote />} />
 
-          {/* <Route path="/team/members" element={<MemberManagementPage />} />
-          <Route path="/team/settings" element={<TeamSettingsPage />} /> */}
+          {/* <Route path="/team/members" element={<MemberManagementPage />} />  */}
+
+          <Route path="/createMeetingMinute" element={<CreateMeetingMinute />} />
+          <Route path="/meeting-minute-view" element={<MeetingMinuteView />} />
         </Routes>
       </div>
     </Router>
