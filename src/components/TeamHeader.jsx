@@ -8,7 +8,6 @@ const tabs = [
   { label: '회의록', path: '/team/meeting' },
   { label: '웬투밋', path: '/team/wentomeet' },
   { label: '회원 관리', path: '/team/members' },
-  { label: '팀 설정', path: '/team/settings' },
 ];
 
 export default function TeamHeader({ teamName, teamDescription, onEdit }) {
