@@ -7,7 +7,7 @@ import Signup from "./pages/auth/Signup";
 import UserInfoPwCheck from './pages/mypage/userinfo/UserInfoPwCheck';
 import UserInfoEdit from './pages/mypage/userinfo/UserInfoEdit';
 import InquiryMain from './pages/mypage/Inquiry/InquiryMain';
-import MeetingMinuteList from './pages/team/MeetingMinuteList';
+import MeetingMinuteList from './pages/team/MeetingMinutes/MeetingMinuteList';
 import WhenToMeetList from "./pages/team/whentomeet/WhenToMeetList";
 import WhenToMeetCreation from "./pages/team/whentomeet/WhenToMeetCreation";
 import WhenToMeetVote from "./pages/team/whentomeet/WhenToMeetVote";
