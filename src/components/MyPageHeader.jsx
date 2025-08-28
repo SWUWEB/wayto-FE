@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import teamLogo from '../assets/images/teamLogo.png';
 
 const tabs = [
-  { label: '회원 정보', path: '/mypage/userinfo' },
+  { label: '회원 정보', path: '/mypage/userinfo/pwCheck' },
   { label: '1:1 문의', path: '/mypage/inquiry' },
 ];
 
