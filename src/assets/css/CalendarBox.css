@@ -89,6 +89,12 @@
   color: #000;
 }
 
+.calendar-cell-small.event {
+  background-color: #F9C6C7;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
 .empty {
   visibility: hidden;
 }

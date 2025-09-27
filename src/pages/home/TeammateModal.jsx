@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import '../../assets/css/createteam.css';
-
-const mockUserList = ['슈니1', '김예원', '홍길동', '슈니2'];
+import axios from 'axios';
 
 const TeammateModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
@@ -10,11 +9,22 @@ const TeammateModal = ({ isOpen, onClose }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
 
-  const handleSearch = () => {
-    const filtered = mockUserList.filter(
-      (user) => user.includes(searchInput) && !selectedMembers.includes(user)
-    );
-    setSearchResults(filtered);
+  //사용자 검색 연동
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get('https://www.waytomeet.site/api/teams/search', {
+        params: { query: searchInput }  //쿼리 형식
+      });
+
+      const filtered = response.data.filter(
+        (user) => !selectedMembers.includes(user)
+      );
+
+      setSearchResults(filtered);
+    } catch (error) {
+      console.error('사용자 검색 중 오류 발생:', error);
+      alert('사용자 검색 중 문제가 발생했습니다.');
+    }
   };
 
   const handleAddMember = (user) => {
@@ -27,7 +37,6 @@ const TeammateModal = ({ isOpen, onClose }) => {
   };
 
   const handleCreateTeam = () => {
-    //alert(`팀 생성 완료!\n팀원: ${selectedMembers.join(', ')}`);
     onClose();
   }; 
 
