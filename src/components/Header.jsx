@@ -23,6 +23,9 @@ const Header = ({ onCreateTeamClick = () => {} }) => {
           <a href="/mypage/userInfo/pwCheck" className="header__link">
             마이페이지
           </a>
+          <a href="/login" className="header__link header__login-button">
+            로그인
+          </a>
         </nav>
       </div>
     </header>
