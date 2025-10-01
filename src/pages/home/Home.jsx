@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import Header from '../../components/Header';
-import Myteam from './team/Myteam';
-import CalendarBox from './CalendarBox';
-import CreateTeamModal from './CreateTeamModal';
-import TeammateModal from './TeammateModal';
-import MeetingList from './MeetingList';
-import '../../assets/css/home.css';
+import React, { useState } from "react";
+import Header from "../../components/Header";
+import Myteam from "./team/Myteam";
+import CalendarBox from "./CalendarBox";
+import CreateTeamModal from "./CreateTeamModal";
+import TeammateModal from "./TeammateModal";
+import MeetingList from "./MeetingList";
+import "../../assets/css/home.css";
+import mainImg from "../../assets/images/waytomeet_main.png";
+import longArrow from "../../assets/images/long-arrow.png";
 
 const Home = () => {
   const [teams, setTeams] = useState([]);
@@ -27,18 +29,38 @@ const Home = () => {
     <div>
       <Header onCreateTeamClick={() => setShowCreateTeamModal(true)} />
 
-      <CreateTeamModal 
-        isOpen={showCreateTeamModal} 
+      <CreateTeamModal
+        isOpen={showCreateTeamModal}
         onClose={() => setShowCreateTeamModal(false)}
         onCreate={handleCreateTeam}
       />
 
-      <TeammateModal 
+      <TeammateModal
         isOpen={showTeammateModal}
         onClose={() => setShowTeammateModal(false)}
       />
 
-      <div className="image-placeholder">여기에 이미지가 들어갈 예정입니다</div>
+      <div className="main-hero">
+        <div className="slogan">
+          회의가 새로워지는 길,
+          <br />
+          <span className="highlight">웨이투회의</span>
+          <br />
+          <span className="sub-slogan">
+            당신의 팀을 더 가까이, 더 똑똑하게
+          </span>
+          <div
+            className="join-section"
+            onClick={() => (window.location.href = "/login")}
+          >
+            <span className="join-text">지금 바로 가입하세요</span>
+            <img src={longArrow} alt="긴 화살표" className="join-arrow" />
+          </div>
+        </div>
+        <div className="main-img">
+          <img src={mainImg} alt="메인 이미지" />
+        </div>
+      </div>
 
       <div className="calendar-meeting-container">
         <CalendarBox />
@@ -48,7 +70,6 @@ const Home = () => {
       </div>
 
       <Myteam teams={teams} />
-      
     </div>
   );
 };
