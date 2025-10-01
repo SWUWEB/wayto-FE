@@ -1,0 +1,11 @@
+/* 전체 스크롤바 숨기기 (스크롤 가능) */
+body, html, #root {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+body::-webkit-scrollbar,
+html::-webkit-scrollbar,
+#root::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
