@@ -40,13 +40,18 @@
   border-radius: 50%;
 }
 
-.calendar-cell.pink {
-  background-color: #F9C6C7;
+.calendar-cell.event-1 {
+  background-color: #FFF9C4; /* 연한 노랑 */
   color: #000;
 }
 
-.calendar-cell.yellow {
-  background-color: #F9F4C6;
+.calendar-cell.event-2 {
+  background-color: #FFF176; /* 중간 노랑 */
+  color: #000;
+}
+
+.calendar-cell.event-3 {
+  background-color: #FBC02D; /* 진한 노랑 */
   color: #000;
 }
 
