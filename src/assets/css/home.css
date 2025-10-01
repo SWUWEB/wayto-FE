@@ -16,7 +16,7 @@
 .calendar-meeting-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start; 
+  align-items: flex-start;
   gap: 50px;
   margin: 40px auto;
   width: 100%;
@@ -27,18 +27,17 @@
 @media (max-width: 1000px) {
   .calendar-meeting-container {
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     padding: 20px 20px;
     gap: 30px;
   }
-  
+
   .calendar-container-small,
   .meeting-wrapper {
     width: 100%;
     max-width: 450px;
   }
 }
-
 
 /* 마이팀 */
 .myteam-section {
@@ -106,4 +105,141 @@
   color: #fff;
   font-size: 16px;
   cursor: pointer;
+}
+
+.main-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1000px;
+  margin: 120px auto;
+  padding: 0 80px;
+}
+
+.slogan {
+  flex: 1;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #222;
+  animation: fadeInLeft 1.5s ease;
+  margin-bottom: 150px;
+}
+
+.slogan .highlight {
+  color: #4b74de; /* 포인트 컬러 */
+}
+
+.main-img {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin-top: 150px;
+}
+
+.main-img img {
+  max-width: 100%;
+  height: auto;
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 텍스트 애니메이션 */
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 이미지 둥둥 움직임 */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.sub-slogan {
+  margin-top: 16px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #555;
+  animation: fadeInLeft 2s ease;
+}
+
+/* join-section hover 효과 */
+.join-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  gap: 16px;
+  animation: fadeInLeft 2s ease;
+  cursor: pointer; /* 마우스 포인터 변경 */
+  transition: transform 0.3s ease; /* 전체 섹션 살짝 이동 */
+}
+
+.join-section:hover {
+  transform: translateX(6px); /* 마우스 오버 시 전체 살짝 오른쪽으로 이동 */
+}
+
+.join-text {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #555;
+  animation: fadeInLeft 2s ease;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.join-section:hover .join-text {
+  color: #4b74de; /* 포인트 컬러로 변경 */
+  font-weight: 500;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.1); /* 살짝 그림자 추가 */
+}
+
+.join-arrow {
+  width: 160px;
+  transition: transform 0.3s ease;
+}
+
+.join-section:hover .join-arrow {
+  transform: translateX(12px) scale(1.05); /* 화살표 살짝 이동 + 확대 */
+}
+
+
+@media (max-width: 770px) {
+  .main-hero {
+    flex-direction: column; /* 위아래 배치 */
+    text-align: left; /* 텍스트 가운데 정렬 */
+  }
+
+  .slogan {
+    margin-bottom: 0;
+    font-size: 3rem; /* 작은 화면에 맞춰 폰트 크기 조정 */
+  }
+
+  .sub-slogan {
+    font-size: 1.2rem;
+  }
+
+  .main-img {
+    margin-top: 50px; /* 이미지와 텍스트 간격 */
+  }
+
+  .join-section {
+    flex-direction: row;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .join-text {
+    font-size: 1.2rem;
+  }
 }
