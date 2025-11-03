@@ -1,0 +1,109 @@
+/* MeetingMinuteItem 관련 */
+.MMI__itemWrapper {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px 30px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 96px;
+}
+
+.MMI__infoTitle {
+  margin: 0 0 20px 0;
+  font-weight: 600;
+}
+
+.MMI__infoText {
+  font-size: 14px;
+  color: #555;
+}
+
+.MMI__infoText > div + div {
+  margin-top: 8px;
+}
+
+.MMI__infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.MMI__label {
+  flex-shrink: 0;
+  width: 80px;
+  font-weight: 600;
+  color: #6E6E6E;
+}
+
+.MMI__value {
+  flex-grow: 1;
+  text-align: left;
+  color: #3A3A3A;
+}
+
+
+.MMI__viewButton {
+  background: none;
+  border: none;
+  color: #8A8A8A;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: flex-end;
+  margin-top: auto;
+  gap: 4px;
+}
+
+/* MeetingMinuteList 관련 */
+.MML__wrapper {
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 5px;
+  max-width: 900px;
+  margin: 60px auto;
+}
+
+.MML__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.MML__headerTitle {
+  margin: 0;
+  font-weight: 600;
+}
+
+.MML__writeButton {
+  background-color: #000;
+  color: #fff;
+  border-radius: 24px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.MML__meetingList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.MML__loadMoreWrapper {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.MML__loadMoreButton {
+  background-color: #000;
+  color: #fff;
+  border-radius: 24px;
+  border: none;
+  padding: 10px 30px;
+  cursor: pointer;
+}

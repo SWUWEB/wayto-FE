@@ -18,7 +18,7 @@
   justify-content: center;
   align-items: flex-start; 
   gap: 50px;
-  padding: 40px 250px;
+  margin: 40px auto;
   width: 100%;
   box-sizing: border-box;
   flex-wrap: nowrap;

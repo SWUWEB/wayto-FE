@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import TeamPageWrapper from './TeamPageWrapper';
-import WhenToMeetPopUp from '../../components/WhenToMeetPopUp.jsx'; 
-import teamLogo from '../../assets/images/teamLogo.png';
-import CheckedBox from '../../assets/images/Checkedbox.png';
-import UncheckedBox from '../../assets/images/Uncheckedbox.png';
-import '../../assets/css/WhenToMeetVote.css';
+import TeamPageWrapper from '.././TeamPageWrapper';
+import WhenToMeetPopUp from '../../../components/WhenToMeetPopUp.jsx'; 
+import teamLogo from '../../../assets/images/teamLogo.png';
+import CheckedBox from '../../../assets/images/Checkedbox.png';
+import UncheckedBox from '../../../assets/images/Uncheckedbox.png';
+import '../../../assets/css/WhenToMeetVote.css';
 
 const hours = [
   '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'

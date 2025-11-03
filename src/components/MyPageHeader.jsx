@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
-import "../assets/css/teamHeader.css";
+import "../assets/css/teamHeader.css"; 
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Pencil } from 'lucide-react';
 import teamLogo from '../assets/images/teamLogo.png';
 
 const tabs = [
-  { label: '회의록', path: '/team/meeting' },
-  { label: '웬투밋', path: '/team/wentomeet' },
-  { label: '회원 관리', path: '/team/members' },
+  { label: '회원 정보', path: '/mypage/userinfo/pwCheck' },
+  { label: '1:1 문의', path: '/mypage/inquiry' },
 ];
 
-export default function TeamHeader({ teamName, teamDescription, onEdit }) {
+export default function MyPageHeader({ userName = '회원 이름입니다.' }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const initialActiveTab = tabs.find(tab => location.pathname.startsWith(tab.path))?.label || '회의록';
-
-  const [activeTab, setActiveTab] = useState(initialActiveTab);
+  const initialActive =
+    tabs.find(t => location.pathname.startsWith(t.path))?.label || '회원 정보';
+  const [activeTab, setActiveTab] = useState(initialActive);
 
   const handleTabClick = (label, path) => {
     setActiveTab(label);
@@ -28,12 +26,12 @@ export default function TeamHeader({ teamName, teamDescription, onEdit }) {
       <div className="teamHeader__header-container">
         <img src={teamLogo} alt="team logo" className="teamHeader__logo" />
         <div className="teamHeader__info">
-          <h1 className="teamHeader__team-name">{teamName}</h1>
-          <p className="teamHeader__description">{teamDescription}</p>
+          <h1 className="teamHeader__team-name">{userName}</h1>
+          <p className="teamHeader__description">
+            반갑습니다, ○○○님.<br />
+            웨이투회의를 통해 팀을 만들고, 일정을 조율해 보세요.
+          </p>
         </div>
-        <button className="teamHeader__edit-icon" onClick={onEdit}>
-          <Pencil size={20} color="#000" />
-        </button>
       </div>
 
       <div className="teamHeader__tab-container">
