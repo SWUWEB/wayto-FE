@@ -11,21 +11,49 @@ const TeammateModal = ({ isOpen, onClose }) => {
 
   //사용자 검색 연동
   const handleSearch = async () => {
+    if (!searchInput.trim()) {
+    alert('검색어를 입력해주세요.');
+    return;
+    }
+
     try {
       const response = await axios.get('https://www.waytomeet.site/api/teams/search', {
-        params: { query: searchInput }  //쿼리 형식
-      });
+       params: { q: searchInput },
+      headers: { Accept: 'application/json' }
+    });
 
-      const filtered = response.data.filter(
-        (user) => !selectedMembers.includes(user)
-      );
+    const users = response.data.users || [];
 
-      setSearchResults(filtered);
-    } catch (error) {
-      console.error('사용자 검색 중 오류 발생:', error);
-      alert('사용자 검색 중 문제가 발생했습니다.');
+    const filtered = users.filter(
+      (user) => !selectedMembers.includes(user)
+    );
+
+    setSearchResults(filtered);
+  } catch (error) {
+    console.error('사용자 검색 중 오류 발생:', error);
+
+    //서버에서 응답이 왔을 때
+    if (error.response) {
+      const status = error.response.status;
+      const { error: apiError, message } = error.response.data;
+
+      if (status === 400) { //400 오류 처리
+        alert(`${message || '잘못된 요청입니다.'}`);
+      } else if (status === 401) {  //401 오류 처리
+        alert(`${message || '인증이 필요합니다.'}`);
+      } else {
+        alert(`오류 (${status}): ${message || '서버 오류가 발생했습니다.'}`);
+      }
+
+    //요청이 서버에 도달하지 못했을 때
+    } else if (error.request) {
+      alert('서버에 연결할 수 없습니다. (네트워크 문제 또는 CORS 오류)');
+    } else {
+      //axios 설정 문제
+      alert('요청 처리 중 오류가 발생했습니다.');
     }
-  };
+  }
+};
 
   const handleAddMember = (user) => {
     setSelectedMembers([...selectedMembers, user]);
