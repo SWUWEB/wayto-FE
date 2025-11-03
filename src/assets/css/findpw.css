@@ -96,7 +96,7 @@
   font-size: 16px;
   border-radius: 6px;
   cursor: pointer;
-  margin-top: 55px;
+  margin-top: 5px;
   width: 100%;
   display: block;
 }
@@ -127,4 +127,44 @@
   margin-top: -6px;
   margin-bottom: 6px;
   display: block;
+}
+
+/* 이메일 + 인증번호 전송 줄 */
+.phone-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* 인증번호 입력 + 확인 줄 */
+.verify-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* 인증번호 전송 버튼 */
+.verify-btn,
+.confirm-btn {
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 0 16px;
+  font-size: 14px;
+  cursor: pointer;
+  height: 44px;
+  white-space: nowrap;
+}
+
+.verify-btn:hover,
+.confirm-btn:hover {
+  background-color: #222;
+}
+
+/* 입력칸을 버튼 옆에서 가득 차게 */
+.phone-row input,
+.verify-row input {
+  flex: 1;
 }

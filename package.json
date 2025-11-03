@@ -9,8 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
-=======
     "@tiptap/extension-color": "^3.2.0",
     "@tiptap/extension-heading": "^3.0.9",
     "@tiptap/extension-highlight": "^3.2.0",
@@ -24,7 +22,6 @@
     "@tiptap/starter-kit": "^3.2.0",
     "axios": "^1.11.0",
     "date-fns": "^4.1.0",
->>>>>>> upstream/feature
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
