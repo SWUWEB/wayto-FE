@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useMemo, useState, useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -79,59 +79,78 @@ const ErrorView = ({ onBack }) => (
 
 const MeetingMinuteView = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  
-  // 데이터 추출 및 검증
-  const meetingData = useMemo(() => {
-    const data = location.state?.meetingData;
-    
-    if (!data) {
-      console.warn("회의록 데이터가 없습니다.");
-      return null;
-    }
+  const { meeting_id } = useParams(); // /meetings/:meeting_id 라우트에서 추출
+  const [meetingData, setMeetingData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    // 날짜/시간 포맷팅
-    const formattedDateTime = data.formattedDateTime || 
-      (data.date && data.time ? `${data.date} ${data.time}` : null);
+  // 서버에서 데이터 가져오기
+  useEffect(() => {
+    const fetchMeeting = async () => {
+      try {
+        const res = await api.get(`/api/meetings/${meeting_id}/minutes`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // JWT 있으면 추가
+          },
+        });
+        const data = res.data;
 
-    return {
-      ...data,
-      title: data.title || "회의록",
-      content: data.content || "<p>회의록 내용이 없습니다.</p>",
-      place: data.place || "미정",
-      formattedDateTime,
-      attendees: Array.isArray(data.attendees) ? data.attendees : []
+        // 백엔드 응답을 프론트에서 쓰기 좋게 가공
+        const formattedData = {
+          meetingId: data.meetingId,
+          title: data.title || "회의록",
+          attendees: data.attendees?.map((a) => a.name) || [],
+          formattedDateTime: data.startedAt
+            ? new Date(data.startedAt).toLocaleString("ko-KR")
+            : null,
+          place: data.place || "미정",
+          link: data.link || null,
+          content: data.notes || "<p>회의록 내용이 없습니다.</p>",
+        };
+
+        setMeetingData(formattedData);
+      } catch (err) {
+        if (err.response?.status === 404) {
+          setError("회의록이 없습니다. 작성 페이지로 이동하세요.");
+        } else {
+          setError("회의록을 불러오는 중 오류가 발생했습니다.");
+        }
+      } finally {
+        setLoading(false);
+      }
     };
-  }, [location.state]);
 
-  // 에디터 설정 - content가 변경될 때만 재생성
-  const editor = useEditor({
-    editable: false,
-    extensions: [
-      StarterKit.configure({ 
-        underline: false, 
-        heading: false 
-      }),
-      Underline,
-      TaskList,
-      TaskItem.configure({ nested: true }),
-      Heading.configure({ levels: [1, 2, 3] }),
-      TextStyle,
-      Color,
-      CustomHighlight,
-    ],
-    content: meetingData?.content,
-  }, [meetingData?.content]);
+    fetchMeeting();
+  }, [meeting_id]);
 
-  // 이벤트 핸들러
+  // TipTap Editor
+  const editor = useEditor(
+    {
+      editable: false,
+      extensions: [
+        StarterKit.configure({
+          underline: false,
+          heading: false,
+        }),
+        Underline,
+        TaskList,
+        TaskItem.configure({ nested: true }),
+        Heading.configure({ levels: [1, 2, 3] }),
+        TextStyle,
+        Color,
+        CustomHighlight,
+      ],
+      content: meetingData?.content,
+    },
+    [meetingData?.content]
+  );
+
   const handleBack = () => {
     navigate(-1);
   };
 
-  // 데이터가 없는 경우 에러 화면
-  if (!meetingData) {
-    return <ErrorView onBack={handleBack} />;
-  }
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <ErrorView onBack={handleBack} />;
 
   return (
     <div className="MMV__container">
@@ -156,9 +175,7 @@ const MeetingMinuteView = () => {
             {meetingData.formattedDateTime || "날짜 미정"}
           </InfoField>
 
-          <InfoField label="장소">
-            {meetingData.place}
-          </InfoField>
+          <InfoField label="장소">{meetingData.place}</InfoField>
 
           <InfoField label="회의 링크">
             <LinkDisplay link={meetingData.link} />
