@@ -1,14 +1,41 @@
 import React, { useState } from 'react';
 import '../../assets/css/createteam.css';
 import teamLogo from '../../assets/images/teamLogo.png';
+import axios from "axios";
 
 const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState([]);
+  const URL = "https://www.waytomeet.site/api/team";
 
-  const handleAddTag = () => {  //태그 생성 3개 제한
+//팀 생성하기 연동
+  const handleCreate = async () => {
+    const newTeam = {
+      name,
+      description,
+      tags,
+    };
+
+    try {
+    const response = await axios.post(URL, newTeam);
+    console.log("팀 생성 성공:", response.data);
+    onCreate(response.data);
+
+    //초기화 작업
+    setName('');
+    setDescription('');
+    setTags([]);
+    setTagInput('');
+    onClose();
+  } catch (error) {
+    console.error("팀 생성 실패:", error);
+    alert("팀 생성 중 오류가 발생했습니다.");
+  }
+};
+
+  const handleAddTag = () => {
   if (tagInput.trim() === '') return;
   if (tags.length >= 3) {
     alert('태그는 최대 3개까지만 추가할 수 있습니다.');
@@ -18,19 +45,6 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
   setTags([...tags, tagInput.trim()]);
   setTagInput('');
 };
-
-  const handleCreate = () => {
-    const newTeam = {
-      name,
-      description,
-      tags,
-    };
-    onCreate(newTeam);  //초기화 작업
-    setName('');
-    setDescription('');
-    setTags([]);
-    setTagInput('');
-  };
 
   if (!isOpen) return null;
 

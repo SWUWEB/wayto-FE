@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import '../../assets/css/CalendarBox.css';
+import axios from "axios";
 
 const CalendarBox = () => {
   const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -8,13 +8,10 @@ const CalendarBox = () => {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
-
-  const highlightPink = 18;
-  const highlightYellow = [23, 26];
+  const [events, setEvents] = useState([]);
 
   const daysInMonth = new Date(year, month, 0).getDate();
   const firstDay = new Date(year, month - 1, 1).getDay();
-
   const dates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
   const changeMonth = (offset) => {
@@ -32,6 +29,37 @@ const CalendarBox = () => {
     setMonth(newMonth);
     setYear(newYear);
   };
+
+  //캘린더 연동
+  useEffect(() => {
+    const fetchCalendar = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+
+        const response = await axios.get("https://www.waytomeet.site/api/calendar", {
+          params: { year, month },
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setEvents(response.data.events);
+      } catch (error) {
+        console.error("캘린더 조회 실패:", error);
+      }
+    };
+
+    fetchCalendar();
+  }, [year, month]);
+
+  const hasEvent = (date) => {
+    return events.some(ev => {
+      const start = new Date(ev.startAt).getDate();
+      return start === date;
+    });
+  };
+
 
    return (
     <div className="calendar-container-small">
@@ -61,19 +89,14 @@ const CalendarBox = () => {
 
         {/* 날짜 */}
         {dates.map((date, idx) => {
-          const isPink = date === highlightPink;
-          const isYellow = highlightYellow.includes(date);
-
-          const cellClass = isPink
-            ? 'calendar-cell-small pink'
-            : isYellow
-            ? 'calendar-cell-small yellow'
-            : 'calendar-cell-small';
-
-          // 요일 색상 적용
           const dayOfWeek = (firstDay + idx) % 7;
           const extraClass =
             dayOfWeek === 0 ? 'sunday' : dayOfWeek === 6 ? 'saturday' : '';
+
+          const isEventDay = hasEvent(date);
+          const cellClass = isEventDay
+            ? 'calendar-cell-small event'
+            : 'calendar-cell-small';
 
           return (
             <div key={date} className={`${cellClass} ${extraClass}`}>
