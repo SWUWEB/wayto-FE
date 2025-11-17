@@ -1,3 +1,4 @@
+import React from "react";
 import "../assets/css/header.css";
 import mainLogo from "../assets/images/mainLogo.png";
 
@@ -17,14 +18,11 @@ const Header = ({ onCreateTeamClick = () => {} }) => {
           <a href="/calendar" className="header__link">
             내 캘린더
           </a>
-          <a onClick={onCreateTeamClick} className="header__link">
-            팀 생성하기
-          </a>
-          <a href="/mypage/userInfo/pwCheck" className="header__link">
+          <span onClick={onCreateTeamClick} className="nav-link clickable">
+          팀 생성하기
+          </span>
+          <a href="/mypage" className="header__link">
             마이페이지
-          </a>
-          <a href="/login" className="header__link header__login-button">
-            로그인
           </a>
         </nav>
       </div>
