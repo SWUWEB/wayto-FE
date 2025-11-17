@@ -129,21 +129,18 @@
   display: block;
 }
 
-/* 이메일 + 인증번호 전송 줄 */
 .phone-row {
   display: flex;
   gap: 8px;
   align-items: center;
 }
 
-/* 인증번호 입력 + 확인 줄 */
 .verify-row {
   display: flex;
   gap: 8px;
   align-items: center;
 }
 
-/* 인증번호 전송 버튼 */
 .verify-btn,
 .confirm-btn {
   background-color: #000;
@@ -163,7 +160,6 @@
   background-color: #222;
 }
 
-/* 입력칸을 버튼 옆에서 가득 차게 */
 .phone-row input,
 .verify-row input {
   flex: 1;

@@ -14,7 +14,7 @@ const FindId = () => {
     verificationCode: "",
   });
   const [errors, setErrors] = useState({});
-  const [codeSent, setCodeSent] = useState(true);
+  const [codeSent, setCodeSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onChange = (e) => {

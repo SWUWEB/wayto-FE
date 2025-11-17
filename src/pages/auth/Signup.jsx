@@ -5,7 +5,7 @@ import teamLogo from "../../assets/images/teamLogo.png";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
-const API_BASE = "";
+const API_BASE = "https://waayto.com";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -69,6 +69,7 @@ const Signup = () => {
   const [globalErr, setGlobalErr] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // 상태 관리
   const [emailCheck, setEmailCheck] = useState({ status: "idle", message: "" });
   const [phoneCheck, setPhoneCheck] = useState({ status: "idle", message: "" });
   const [emailVerify, setEmailVerify] = useState({ status: "idle", message: "" });
@@ -76,73 +77,7 @@ const Signup = () => {
   const emailChecking = emailCheck.status === "checking";
   const phoneChecking = phoneCheck.status === "checking";
 
-  class AppError extends Error {
-    constructor(code, message) {
-      super(message);
-      this.code = code;
-    }
-  }
-
-  const fail = (code, message) => {
-    throw new AppError(code, message);
-  };
-
-  const postJSON = async (url, body) => {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(body),
-    });
-    const data = await res.json().catch(() => ({}));
-    return { res, data };
-  };
-
-  const runStep = async ({
-    setStatus,
-    checkingMessage,
-    tryFn,
-    success,
-    errorMessageDefault,
-  }) => {
-    try {
-      setStatus({ status: "checking", message: checkingMessage });
-      const maybeSuccessOverride = await tryFn();
-      setStatus(
-        maybeSuccessOverride?.message
-          ? { status: success.status, message: maybeSuccessOverride.message }
-          : success
-      );
-    } catch (err) {
-      const msg =
-        err?.message ||
-        errorMessageDefault ||
-        "오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
-      setStatus({ status: "error", message: msg });
-    }
-  };
-
-  const MSG = {
-    checking: "확인 중입니다…",
-    neterr: "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
-    email: {
-      invalid: "올바른 이메일 형식이 아닙니다.",
-      verifyFail: "이메일 확인 중 오류가 발생했습니다.",
-      taken: "이미 가입된 이메일입니다.",
-      available: "사용 가능한 이메일입니다. 이메일로 전송된 인증번호를 입력해 주세요.",
-      sendFail: "인증번호 발송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
-      codeEmpty: "인증번호를 입력해주세요.",
-      codeInvalid: "인증번호가 올바르지 않습니다. 다시 확인해주세요.",
-      codeOk: "이메일 인증이 완료되었습니다.",
-      needDupCheck: "이메일 중복 확인을 먼저 진행해주세요.",
-    },
-    phone: {
-      invalid: "올바른 전화번호 형식이 아닙니다.",
-      verifyFail: "전화번호 확인 중 오류가 발생했습니다.",
-      taken: "이미 사용 중인 전화번호입니다.",
-      ok: "사용 가능한 전화번호입니다.",
-    },
-  };
-
+  // email + phone 빌드
   const buildEmail = () => {
     const id = form.emailId.trim();
     const domain = form.emailDomain.trim();
@@ -158,117 +93,177 @@ const Signup = () => {
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+
     setFieldErr((prev) => ({ ...prev, [name]: "" }));
     setGlobalErr("");
 
     if (name === "emailId" || name === "emailDomain")
       setEmailCheck({ status: "idle", message: "" });
+
     if (name === "phone2" || name === "phone3")
       setPhoneCheck({ status: "idle", message: "" });
-    if (name === "emailCode") setEmailVerify({ status: "idle", message: "" });
+
+    if (name === "emailCode")
+      setEmailVerify({ status: "idle", message: "" });
   };
 
+  // 이메일 중복 확인
   const handleEmailCheck = async () => {
     const email = buildEmail();
-    if (!email) return;
-
     if (!EMAIL_REGEX.test(email)) {
-      return setEmailCheck({ status: "error", message: MSG.email.invalid });
+      return setEmailCheck({ status: "error", message: "올바른 이메일 형식이 아닙니다." });
     }
 
-    await runStep({
-      setStatus: setEmailCheck,
-      checkingMessage: MSG.checking,
-      errorMessageDefault: MSG.neterr,
-      success: { status: "available", message: MSG.email.available },
-      tryFn: async () => {
+    try {
+      setEmailCheck({ status: "checking", message: "확인 중..." });
 
-        const { res: vRes, data: vData } = await postJSON(`${API_BASE}/api/users/verify-id`, {
-          email,
-        });
-        if (!vRes.ok) fail("VERIFY_FAILED", vData?.message || MSG.email.verifyFail);
-        if (vData?.available !== true) fail("EMAIL_TAKEN", MSG.email.taken);
+      const res = await fetch(`${API_BASE}/api/users/verify-id`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
 
-        const { res: sRes, data: sData } = await postJSON(
-          `${API_BASE}/api/users/email/send-code`,
-          { email }
-        );
-        if (!sRes.ok) fail("SEND_FAILED", sData?.message || MSG.email.sendFail);
-      },
-    });
+      const data = await res.json();
+
+      setEmailCheck({
+        status: data.available ? "available" : "error",
+        message: data.message,
+      });
+    } catch (err) {
+      setEmailCheck({ status: "error", message: "서버 오류가 발생했습니다." });
+    }
   };
 
-  const handleEmailCodeVerify = async () => {
-    const email = buildEmail();
-    if (!email) {
-      return setEmailVerify({ status: "error", message: MSG.email.needDupCheck });
-    }
-    const code = form.emailCode.trim();
-    if (!code) {
-      return setEmailVerify({ status: "error", message: MSG.email.codeEmpty });
-    }
-
-    await runStep({
-      setStatus: setEmailVerify,
-      checkingMessage: MSG.checking,
-      errorMessageDefault: MSG.neterr,
-      success: { status: "success", message: MSG.email.codeOk },
-      tryFn: async () => {
-        const { res, data } = await postJSON(`${API_BASE}/api/users/email/verify-code`, {
-          email,
-          code,
-        });
-        if (!res.ok) fail("VERIFY_FAILED", data?.message || MSG.email.verifyFail);
-        if (data?.valid !== true) fail("INVALID_CODE", MSG.email.codeInvalid);
-      },
-    });
-  };
-
+  // 전화번호 중복 확인
   const handlePhoneCheck = async () => {
     const phone = buildPhone();
-    if (!phone) return;
-
     if (!/^010-\d{3,4}-\d{4}$/.test(phone)) {
-      return setPhoneCheck({ status: "error", message: MSG.phone.invalid });
+      return setPhoneCheck({ status: "error", message: "올바른 전화번호 형식이 아닙니다." });
     }
 
-    await runStep({
-      setStatus: setPhoneCheck,
-      checkingMessage: MSG.checking,
-      errorMessageDefault: MSG.neterr,
-      success: { status: "available", message: MSG.phone.ok },
-      tryFn: async () => {
-        const { res, data } = await postJSON(`${API_BASE}/api/users/verify-phone`, { phone });
-        if (!res.ok) fail("VERIFY_FAILED", data?.message || MSG.phone.verifyFail);
-        if (data?.available !== true) fail("PHONE_TAKEN", data?.message || MSG.phone.taken);
-      },
-    });
+    try {
+      setPhoneCheck({ status: "checking", message: "확인 중..." });
+
+      const res = await fetch(`${API_BASE}/api/users/verify-phone`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone }),
+      });
+
+      const data = await res.json();
+
+      setPhoneCheck({
+        status: data.available ? "available" : "error",
+        message: data.message,
+      });
+    } catch (err) {
+      setPhoneCheck({ status: "error", message: "서버 요청 실패" });
+    }
   };
 
+// ✔ 인증번호 전송 
+const handleSendEmailCode = async () => {
+  const email = buildEmail();
+
+  if (!EMAIL_REGEX.test(email)) {
+    return setEmailCheck({
+      status: "error",
+      message: "이메일 형식이 올바르지 않습니다.",
+    });
+  }
+
+  try {
+    setLoading(true);
+
+    const res = await fetch(`${API_BASE}/api/users/signup-sendnum`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return setEmailCheck({
+        status: "error",
+        message: data.error || data.message,
+      });
+    }
+
+    setEmailCheck({
+      status: "success",
+      message: data.message,
+    });
+
+  } catch (e) {
+    setEmailCheck({
+      status: "error",
+      message: "이메일 발송에 실패했습니다.",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
+  // ✔ 인증번호 검증 
+  const handleEmailCodeVerify = async () => {
+    const email = buildEmail();
+    const code = form.emailCode.trim();
+
+    if (!code) {
+      return setEmailVerify({ status: "error", message: "인증번호를 입력해주세요." });
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(`${API_BASE}/api/users/verify-number`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          code,
+          type: "signup",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return setEmailVerify({ status: "error", message: data.message });
+      }
+
+      setEmailVerify({ status: "success", message: data.message });
+    } catch (e) {
+      setEmailVerify({ status: "error", message: "인증요청 실패" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 클라이언트 유효성 검사
   const validateClient = () => {
     const e = {};
     const email = buildEmail();
 
     if (!form.name.trim()) e.name = "이름을 입력해주세요.";
-    if (form.password.length < 8) e.password = "비밀번호를 입력해주세요.";
-    if (form.password !== form.confirmPassword)
-      e.confirmPassword = "비밀번호가 일치하지 않습니다.";
+    if (form.password.length < 8) e.password = "비밀번호는 8자 이상이어야 합니다.";
+    if (form.password !== form.confirmPassword) e.confirmPassword = "비밀번호가 일치하지 않습니다.";
 
-    if (!form.emailId.trim() || !form.emailDomain.trim()) {
+    if (!form.emailId.trim() || !form.emailDomain.trim())
       e.email = "이메일을 입력해주세요.";
-    } else if (!EMAIL_REGEX.test(email)) {
-      e.email = "올바른 이메일 형식이 아닙니다.";
-    }
+    else if (!EMAIL_REGEX.test(email)) e.email = "올바른 이메일 형식이 아닙니다.";
 
-    if (!form.phone2.trim() || !form.phone3.trim()) {
+    if (!form.phone2.trim() || !form.phone3.trim())
       e.phone = "전화번호를 입력해주세요.";
-    }
 
     return e;
   };
 
+  // ✔ 회원가입 제출
   const onSubmit = async (e) => {
     e.preventDefault();
+
     const fe = validateClient();
     if (Object.keys(fe).length) {
       setFieldErr(fe);
@@ -280,33 +275,22 @@ const Signup = () => {
     setFieldErr({});
 
     const email = buildEmail();
-    const phoneRaw = buildPhone();
-
-    const payload = {
-      name: form.name,
-      email,
-      password: form.password,
-      confirmPassword: form.confirmPassword,
-      ...(phoneRaw ? { phone: phoneRaw } : {}),
-    };
+    const phone = buildPhone();
 
     try {
       const res = await fetch(`${API_BASE}/api/users/signup`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email,
+          password: form.password,
+          confirmPassword: form.confirmPassword,
+          phone,
+        }),
       });
 
-      const text = await res.text();
-      let data;
-      try {
-        data = text ? JSON.parse(text) : {};
-      } catch {
-        data = { raw: text };
-      }
+      const data = await res.json();
 
       if (!res.ok) {
         if (data?.details?.length) {
@@ -314,13 +298,7 @@ const Signup = () => {
           data.details.forEach((d) => (map[d.field] = d.message));
           setFieldErr(map);
         } else {
-          setGlobalErr(
-            data?.message ||
-              data?.error ||
-              (typeof data?.raw === "string"
-                ? data.raw
-                : "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.")
-          );
+          setGlobalErr(data.message || "회원가입 실패");
         }
         return;
       }
@@ -328,8 +306,7 @@ const Signup = () => {
       if (data?.token) localStorage.setItem("accessToken", data.token);
       nav("/");
     } catch (err) {
-      console.error("[SIGNUP] Network/CORS error:", err);
-      setGlobalErr("네트워크/CORS 오류가 발생했습니다.");
+      setGlobalErr("서버 오류가 발생했습니다.");
     } finally {
       setLoading(false);
     }
@@ -338,7 +315,7 @@ const Signup = () => {
   const rsCommon = {
     menuPlacement: "bottom",
     menuPosition: "fixed",
-    menuPortalTarget: typeof document !== "undefined" ? document.body : null,
+    menuPortalTarget: document.body,
     isSearchable: false,
     styles: {
       container: (base) => ({ ...base, width: 170 }),
@@ -356,27 +333,13 @@ const Signup = () => {
       input: (b) => ({ ...b, fontSize: 14, margin: 0, padding: 0 }),
       indicatorsContainer: (b) => ({ ...b, height: 44 }),
       menuPortal: (b) => ({ ...b, zIndex: 9999 }),
-      menu: (b) => ({ ...b, zIndex: 9999 }),
-      option: (b, s) => ({
-        ...b,
-        fontSize: 14,
-        backgroundColor: s.isFocused ? "#eee" : "#fff",
-        color: "#000",
-      }),
     },
   };
-
-  const emailMsgStyle =
-    emailCheck.status === "available"
-      ? { color: "#1a7f37" }
-      : emailCheck.status === "unavailable" || emailCheck.status === "error"
-      ? { color: "red" }
-      : {};
 
   const phoneMsgStyle =
     phoneCheck.status === "available"
       ? { color: "#1a7f37" }
-      : phoneCheck.status === "unavailable" || phoneCheck.status === "error"
+      : phoneCheck.status === "error"
       ? { color: "red" }
       : {};
 
@@ -386,6 +349,13 @@ const Signup = () => {
       : emailVerify.status === "error"
       ? { color: "red" }
       : {};
+
+      const emailMsgStyle =
+  emailCheck.status === "available" || emailCheck.status === "success"
+    ? { color: "#1a7f37" }
+    : emailCheck.status === "error"
+    ? { color: "red" }
+    : {};
 
   return (
     <div className="page-wrapper">
@@ -401,7 +371,6 @@ const Signup = () => {
         {globalErr && <p className="global-error">{globalErr}</p>}
 
         <form className="signup-form" onSubmit={onSubmit}>
-          {/* 이름 */}
           <label>이름 *</label>
           <input
             type="text"
@@ -422,7 +391,9 @@ const Signup = () => {
               value={form.emailId}
               onChange={onChange}
             />
+
             <span>@</span>
+
             <input
               type="text"
               name="emailDomain"
@@ -430,22 +401,33 @@ const Signup = () => {
               value={form.emailDomain}
               onChange={onChange}
             />
+
             <button
               type="button"
               className="email-check"
               onClick={handleEmailCheck}
-              disabled={loading || emailChecking}
+              disabled={emailChecking || loading}
             >
-              {emailChecking ? "확인 중…" : "이메일 중복 확인"}
+              {emailChecking ? "확인 중…" : "중복 확인"}
+            </button>
+
+            <button
+              type="button"
+              className="email-check"
+              onClick={handleSendEmailCode}
+              disabled={loading}
+            >
+              인증번호 전송
             </button>
           </div>
+
           {(fieldErr.email || emailCheck.status !== "idle") && (
             <span className="alert" style={emailMsgStyle}>
               {emailCheck.status === "idle" ? fieldErr.email : emailCheck.message}
             </span>
           )}
 
-          {/* 이메일 인증번호 */}
+          {/* 인증번호 입력 */}
           <label>이메일 인증번호 *</label>
           <div className="email-verify-box">
             <input
@@ -464,6 +446,7 @@ const Signup = () => {
               인증번호 확인
             </button>
           </div>
+
           {emailVerify.status !== "idle" && (
             <span className="alert" style={emailVerifyMsgStyle}>
               {emailVerify.message}
@@ -481,7 +464,6 @@ const Signup = () => {
           />
           {fieldErr.password && <span className="alert">{fieldErr.password}</span>}
 
-          {/* 비밀번호 확인 */}
           <label>비밀번호 확인 *</label>
           <input
             type="password"
@@ -518,25 +500,19 @@ const Signup = () => {
               type="button"
               className="phone-check"
               onClick={handlePhoneCheck}
-              disabled={loading || phoneChecking}
+              disabled={phoneChecking || loading}
             >
-              {phoneChecking ? "확인 중…" : "전화번호 중복 확인"}
+              {phoneChecking ? "확인 중…" : "중복 확인"}
             </button>
           </div>
+
           {(fieldErr.phone || phoneCheck.status !== "idle") && (
-            <span
-              className="alert"
-              style={
-                phoneCheck.status !== "idle"
-                  ? { color: phoneCheck.status === "available" ? "#1a7f37" : "red" }
-                  : undefined
-              }
-            >
+            <span className="alert" style={phoneMsgStyle}>
               {phoneCheck.status !== "idle" ? phoneCheck.message : fieldErr.phone}
             </span>
           )}
 
-          {/* 생년월일 */}
+          {/* 생일 */}
           <label>생년월일 </label>
           <div className="birth-box">
             <Select
@@ -581,6 +557,7 @@ const Signup = () => {
             >
               취소
             </button>
+
             <button type="submit" className="submit" disabled={loading}>
               {loading ? "가입 중..." : "회원가입"}
             </button>

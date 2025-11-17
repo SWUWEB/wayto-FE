@@ -198,3 +198,7 @@
   background-color: #888;
   cursor: not-allowed;
 }
+
+.email-box input { width: 140px; }
+.email-check { width: 155px; }
+.email-verify { width: 155px; }

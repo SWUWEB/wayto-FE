@@ -47,7 +47,7 @@ const Login = () => {
       setErrors({ email: "", password: "", global: "" });
 
       // 서버 로그인 요청
-      const res = await fetch(`${API_BASE}/api/auth/login`, {
+      const res = await fetch(`${API_BASE}/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
