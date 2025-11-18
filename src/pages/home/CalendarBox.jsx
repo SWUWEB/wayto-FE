@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+
 import '../../assets/css/CalendarBox.css';
+
 import axios from "axios";
 
 const CalendarBox = () => {
@@ -30,7 +32,7 @@ const CalendarBox = () => {
     setYear(newYear);
   };
 
-  //캘린더 연동
+  // 캘린더 연동
   useEffect(() => {
     const fetchCalendar = async () => {
       try {
@@ -60,10 +62,8 @@ const CalendarBox = () => {
     });
   };
 
-
-   return (
+  return (
     <div className="calendar-container-small">
-      {/* 월 표시 + 변경 버튼 */}
       <div className="calendar-header">
         <button className="month-btn" onClick={() => changeMonth(-1)}>◀</button>
         <h2 className="calendar-month">{month}월</h2>
@@ -82,12 +82,11 @@ const CalendarBox = () => {
           </div>
         ))}
 
-        {/* 빈칸 */}
         {Array.from({ length: firstDay }, (_, i) => (
           <div key={`empty-${i}`} className="calendar-cell-small empty"></div>
         ))}
 
-        {/* 날짜 */}
+        
         {dates.map((date, idx) => {
           const dayOfWeek = (firstDay + idx) % 7;
           const extraClass =

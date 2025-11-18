@@ -14,6 +14,8 @@ const Home = () => {
   const [teams, setTeams] = useState([]);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [showTeammateModal, setShowTeammateModal] = useState(false);
+  const [currentTeamId, setCurrentTeamId] = useState(null);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   useEffect(() => {
@@ -27,10 +29,20 @@ const Home = () => {
     
     const fetchTeams = async () => {
       try {
+        const token = localStorage.getItem("accessToken"); 
+
+        if (!token) {
+          console.warn("Access Token이 없어 팀 목록을 조회할 수 없습니다. 로그인 상태를 확인하세요.");
+          return; 
+        }
+
         const response = await axios.get("/api/teams", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           withCredentials: true,
         });
-
+        
         const teamList = response.data.teams || [];
 
         const formattedTeams = teamList.map((team) => ({
@@ -43,7 +55,11 @@ const Home = () => {
 
         setTeams(formattedTeams);
       } catch (error) {
-        console.error("팀 목록 조회 실패:", error);
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+            console.error("인증 실패: 다시 로그인해주세요.");
+        } else {
+            console.error("팀 목록 조회 실패:", error);
+        }
       }
     };
 
@@ -51,9 +67,10 @@ const Home = () => {
   }, [isLoggedIn]);
 
   const handleCreateTeam = (newTeam) => {
-    setTeams([newTeam, ...teams]);
+    setTeams((prev) => [newTeam, ...prev]);
+    setCurrentTeamId(newTeam.id); 
     setShowCreateTeamModal(false);
-    setShowTeammateModal(true);
+    setShowTeammateModal(true); 
   };
 
   return (
@@ -69,6 +86,7 @@ const Home = () => {
       <TeammateModal
         isOpen={showTeammateModal}
         onClose={() => setShowTeammateModal(false)}
+        teamId={currentTeamId} 
       />
 
       <div className="main-hero">
@@ -105,8 +123,7 @@ const Home = () => {
           </div>
         </div>
       )}
-
-      {isLoggedIn && <Myteam teams={teams} />}
+      {isLoggedIn && <Myteam teams={teams.slice(0, 9)} />}
     </div>
   );
 };

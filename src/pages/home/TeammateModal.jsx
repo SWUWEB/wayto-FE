@@ -9,76 +9,39 @@ const TeammateModal = ({ isOpen, onClose }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
 
-  //사용자 검색 연동
   const handleSearch = async () => {
-    if (!searchInput.trim()) {
-    alert('검색어를 입력해주세요.');
-    return;
-    }
+    if (!searchInput.trim()) return alert('검색어를 입력해주세요.');
 
     const token = localStorage.getItem('accessToken');
-    if (!token) {
-      alert('로그인이 필요합니다. 먼저 로그인해주세요.');
-      return;
-    }
+    if (!token) return alert('로그인이 필요합니다.');
 
     try {
       const response = await axios.get('https://waayto.com/api/teams/search', {
         params: { q: searchInput },
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
 
-    const users = response.data.users || [];
+      const users = response.data.users || [];
+      const filtered = users.filter(user => !selectedMembers.some(u => u.email === user.email));
+      setSearchResults(filtered);
 
-    const filtered = users.filter(
-      (user) => !selectedMembers.includes(user)
-    );
-
-    setSearchResults(filtered);
-  } catch (error) {
-    console.error('사용자 검색 중 오류 발생:', error);
-
-    //서버에서 응답이 왔을 때
-    if (error.response) {
-      const status = error.response.status;
-      const { error: apiError, message } = error.response.data;
-
-      if (status === 400) { //400 오류 처리
-        alert(`${message || '잘못된 요청입니다.'}`);
-      } else if (status === 401) {  //401 오류 처리
-        alert(`${message || '인증이 필요합니다.'}`);
-      } else {
-        alert(`오류 (${status}): ${message || '서버 오류가 발생했습니다.'}`);
-      }
-
-    //요청이 서버에 도달하지 못했을 때
-    } else if (error.request) {
-      alert('서버에 연결할 수 없습니다. (네트워크 문제 또는 CORS 오류)');
-    } else {
-      //axios 설정 문제
-      alert('요청 처리 중 오류가 발생했습니다.');
+    } catch (error) {
+      console.error('사용자 검색 중 오류 발생:', error);
+      alert('사용자 검색 중 오류가 발생했습니다.');
     }
-  }
-};
+  };
 
   const handleAddMember = (user) => {
     setSelectedMembers([...selectedMembers, user]);
-    setSearchResults(searchResults.filter((u) => u !== user));
+    setSearchResults(searchResults.filter(u => u.email !== user.email));
   };
 
   const handleRemoveMember = (user) => {
-    setSelectedMembers(selectedMembers.filter((u) => u !== user));
+    setSelectedMembers(selectedMembers.filter(u => u.email !== user.email));
   };
 
-  const handleCreateTeam = () => {
-    onClose();
-  }; 
-
- return (
+  return (
     <div className="modal-overlay">
       <div className="modal-content teammate-modal">
         <div className="modal-header">
@@ -98,7 +61,7 @@ const TeammateModal = ({ isOpen, onClose }) => {
         <div className="modal-body teammate-body">
           <div className="user-list-section">
             {searchResults.map((user) => (
-              <div key={user} className="user-card">
+              <div key={user.email} className="user-card">
                 <div className="user-info">
                   <div className="avatar" />
                   <div>
@@ -128,7 +91,7 @@ const TeammateModal = ({ isOpen, onClose }) => {
         </div>
 
         <div className="modal-footer right-align">
-          <button onClick={handleCreateTeam}>팀 생성하기</button>
+          <button onClick={onClose}>팀 생성하기</button>
         </div>
       </div>
     </div>
