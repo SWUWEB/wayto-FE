@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.10",
     "@tiptap/extension-color": "^3.2.0",
     "@tiptap/extension-heading": "^3.0.9",
     "@tiptap/extension-highlight": "^3.2.0",

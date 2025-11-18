@@ -19,16 +19,17 @@ import "../../../../assets/css/CreateMeetingMinute.css";
 
 const CreateMeetingMinute = () => {
   const navigate = useNavigate();
-  
+
   // State 관리
   const [attendees, setAttendees] = useState(["이채영"]);
   const [title, setTitle] = useState("");
   const [place, setPlace] = useState("");
   const [link, setLink] = useState("");
-  
+
   const { defaultDate, defaultTime } = getDefaultDateTime();
   const [meetingDate, setMeetingDate] = useState(defaultDate);
-  const [meetingTime, setMeetingTime] = useState(defaultTime);
+  const [startTime, setStartTime] = useState(defaultTime);
+  const [endTime, setEndTime] = useState(defaultTime);
 
   // 에디터 설정
   const editor = useEditor({
@@ -48,31 +49,68 @@ const CreateMeetingMinute = () => {
     content: "<p>회의록을 작성해보세요.</p>",
   });
 
+  const toISODateTime = (date, time) => {
+    return new Date(`${date}T${time}:00`).toISOString();
+  };
+
   const handleBack = () => {
     navigate(-1);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!editor) {
       alert("에디터가 준비되지 않았습니다.");
       return;
     }
 
-    const editorContent = editor.getHTML();
-    const formattedDateTime = formatKoreanDateTime(meetingDate, meetingTime);
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
 
-    const meetingData = {
+    const editorContent = editor.getHTML();
+
+    const requestBody = {
+      teamId: 1,
       title: title || "새로운 회의록",
-      attendees,
-      date: meetingDate,
-      time: meetingTime,
-      formattedDateTime,
-      place,
-      link,
+      attendees: attendees.join(", "),
+      meetingDate: meetingDate,
+      startTime: startTime,
+      endTime: endTime,
+      location: place,
+      meetingLink: link,
       content: editorContent,
     };
 
-    navigate("/meeting-minute-view", { state: { meetingData } });
+    try {
+      const response = await fetch("https://waayto.com/api/minutes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error("API Error:", error);
+        alert("회의록 작성 중 오류가 발생했습니다.");
+        return;
+      }
+
+      const result = await response.json();
+
+      // 성공 시 상세 페이지 혹은 목록으로 이동
+      navigate(`/minutes/${result.minuteId}`, {
+        state: { created: true },
+      });
+    } catch (err) {
+      console.error("Network Error:", err);
+      alert("서버와 연결할 수 없습니다.");
+    }
   };
 
   return (
@@ -115,10 +153,24 @@ const CreateMeetingMinute = () => {
                 onChange={(e) => setMeetingDate(e.target.value)}
                 className="CMM__dateInput"
               />
+            </div>
+          </div>
+
+          {/* 회의 시간 */}
+          <div className="CMM__field">
+            <span className="CMM__label">회의 시간</span>
+            <div className="CMM__datetime-inputs">
               <input
                 type="time"
-                value={meetingTime}
-                onChange={(e) => setMeetingTime(e.target.value)}
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                className="CMM__timeInput"
+              />
+              <span style={{ margin: "0 8px" }}>~</span>
+              <input
+                type="time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
                 className="CMM__timeInput"
               />
             </div>
