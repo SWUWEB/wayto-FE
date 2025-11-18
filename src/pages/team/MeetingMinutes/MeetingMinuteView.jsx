@@ -201,20 +201,6 @@ const MeetingMinuteView = () => {
             onClick={handleBack}
           />
           <h2>{meetingData.title}</h2>
-          {isOwner && (
-            <>
-              <button className="MMV__editBtn" onClick={handleEdit}>
-                수정
-              </button>
-              <button
-                className="MMV__deleteBtn"
-                onClick={handleDelete}
-                disabled={deleting}
-              >
-                {deleting ? "삭제 중..." : "삭제"}
-              </button>
-            </>
-          )}
         </div>
 
         <div className="MMV__view">
@@ -236,6 +222,20 @@ const MeetingMinuteView = () => {
               <EditorContent editor={editor} />
             </div>
           </div>
+          {isOwner && (
+            <div className="MMV__buttonGroup">
+              <button className="MMV__editBtn" onClick={handleEdit}>
+                수정
+              </button>
+              <button
+                className="MMV__deleteBtn"
+                onClick={handleDelete}
+                disabled={deleting}
+              >
+                {deleting ? "삭제 중..." : "삭제"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

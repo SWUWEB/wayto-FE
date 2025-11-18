@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, useParams } from 'react-router-dom'; 
 import TeamPageWrapper from '.././TeamPageWrapper';
 import '../../../assets/css/WhenToMeetCreation.css';
 import teamLogo from '../../../assets/images/teamLogo.png';
@@ -19,6 +19,7 @@ const WhenToMeetCreation = () => {
   
   const [selectedParticipants, setSelectedParticipants] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const teamId = useParams().teamId;
 
   const toggleParticipant = (name) => {
     setSelectedParticipants(prev =>
@@ -27,7 +28,7 @@ const WhenToMeetCreation = () => {
   };
 
   const handleCreateVote = () => {
-    navigate('/team/wentomeet/whentomeetvote'); 
+    navigate(`/team/${teamId}/wentomeet/whentomeetvote`); 
   };
 
   const [startDate, setStartDate] = useState(null);
