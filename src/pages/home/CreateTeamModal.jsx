@@ -10,41 +10,63 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
   const [tags, setTags] = useState([]);
   const URL = "https://www.waayto.com/api/team";
 
-//팀 생성하기 연동
+  //팀 생성하기 연동
   const handleCreate = async () => {
+    const token = localStorage.getItem('accessToken'); //토큰 추가
+
     const newTeam = {
       name,
       description,
-      tags,
+      teamtag, 
     };
 
     try {
-    const response = await axios.post(URL, newTeam);
-    console.log("팀 생성 성공:", response.data);
-    onCreate(response.data);
+      const response = await axios.post(
+        URL,
+        newTeam,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
-    //초기화 작업
-    setName('');
-    setDescription('');
-    setTags([]);
-    setTagInput('');
-    onClose();
-  } catch (error) {
-    console.error("팀 생성 실패:", error);
-    alert("팀 생성 중 오류가 발생했습니다.");
-  }
-};
+      console.log("팀 생성 성공:", response.data);
+      const createdTeam = response.data;
+
+      const formattedTeam = {
+        id: createdTeam.id,
+        name: createdTeam.name,
+        description: createdTeam.description,
+        teamtag: createdTeam.teamtag || [],
+        pageUrl: `/team/${createdTeam.id}`,
+      };
+      onCreate(formattedTeam);
+
+      //초기화 작업
+      setName('');
+      setDescription('');
+      setTeamtag([]); 
+      setTagInput('');
+      onClose();
+    } catch (error) {
+      console.error("팀 생성 실패:", error);
+      alert("팀 생성 중 오류가 발생했습니다.");
+    }
+  };
 
   const handleAddTag = () => {
-  if (tagInput.trim() === '') return;
-  if (tags.length >= 3) {
-    alert('태그는 최대 3개까지만 추가할 수 있습니다.');
-    return;
-  }
+    if (tagInput.trim() === '') return;
+    if (teamtag.length >= 3) {
+      alert('태그는 최대 3개까지만 추가할 수 있습니다.');
+      return;
+    }
 
-  setTags([...tags, tagInput.trim()]);
-  setTagInput('');
-};
+    setTeamtag([...teamtag, tagInput.trim()]);
+    setTagInput('');
+  };
 
   if (!isOpen) return null;
 
@@ -61,6 +83,7 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+
         <div className="modal-textarea-wrapper">
           <textarea
             type="text"
@@ -74,6 +97,7 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
             {description.length} / 250 자
           </div>
         </div>
+
         <div className="modal-tag-input-row">
           <input
             type="text"
@@ -84,21 +108,22 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
           />
           <button className="modal-add-button" onClick={handleAddTag}>+</button>
         </div>
+
         <div className="tag-preview">
-  {tags.map((tag, index) => (
-    <span key={index} className="team-tag">
-      {tag}
-      <button
-        className="tag-remove-btn"
-        onClick={() => {
-          setTags(tags.filter((_, i) => i !== index));
-        }}
-      >
-        ×
-      </button>
-    </span>
-  ))}
-</div>
+          {teamtag.map((tag, index) => (
+            <span key={index} className="team-tag">
+              {tag}
+              <button
+                className="tag-remove-btn"
+                onClick={() => {
+                  setTeamtag(teamtag.filter((_, i) => i !== index));
+                }}
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
         <button className="modal-button" onClick={handleCreate}>생성하기</button>
       </div>
     </div>

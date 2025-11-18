@@ -16,11 +16,21 @@ const TeammateModal = ({ isOpen, onClose }) => {
     return;
     }
 
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      alert('로그인이 필요합니다. 먼저 로그인해주세요.');
+      return;
+    }
+
     try {
-      const response = await axios.get('https://www.waayto.com/api/teams/search', {
-       params: { q: searchInput },
-      headers: { Accept: 'application/json' }
-    });
+      const response = await axios.get('https://waayto.com/api/teams/search', {
+        params: { q: searchInput },
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
 
     const users = response.data.users || [];
 
@@ -78,7 +88,7 @@ const TeammateModal = ({ isOpen, onClose }) => {
         <div className="search-section">
           <input
             type="text"
-            placeholder="사용자 아이디를 검색해주세요.."
+            placeholder="사용자 이메일을 검색해주세요.."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
           />
@@ -92,8 +102,8 @@ const TeammateModal = ({ isOpen, onClose }) => {
                 <div className="user-info">
                   <div className="avatar" />
                   <div>
-                    <div className="user-name">{user}</div>
-                    <div className="user-id">frontend</div>
+                    <div className="user-name">{user.name}</div>
+                    <div className="user-id">{user.email}</div>
                   </div>
                 </div>
                 <button className="action-btn" onClick={() => handleAddMember(user)}>➕</button>
@@ -103,12 +113,12 @@ const TeammateModal = ({ isOpen, onClose }) => {
 
           <div className="user-list-section">
             {selectedMembers.map((user) => (
-              <div key={user} className="user-card">
+              <div key={user.email} className="user-card">
                 <div className="user-info">
                   <div className="avatar" />
                   <div>
-                    <div className="user-name">{user}</div>
-                    <div className="user-id">hahsahfrontend</div>
+                    <div className="user-name">{user.name}</div>
+                    <div className="user-id">{user.email}</div>
                   </div>
                 </div>
                 <button className="action-btn" onClick={() => handleRemoveMember(user)}>❌</button>

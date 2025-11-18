@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Myteam from "./team/Myteam";
 import CalendarBox from "./CalendarBox";
@@ -8,19 +8,50 @@ import MeetingList from "./MeetingList";
 import "../../assets/css/home.css";
 import mainImg from "../../assets/images/waytomeet_main.png";
 import longArrow from "../../assets/images/long-arrow.png";
+import axios from "axios";
 
 const Home = () => {
   const [teams, setTeams] = useState([]);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [showTeammateModal, setShowTeammateModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  // 팀 목록 연동
+  useEffect(() => {
+    if (!isLoggedIn) return; 
+    
+    const fetchTeams = async () => {
+      try {
+        const response = await axios.get("/api/teams", {
+          withCredentials: true,
+        });
+
+        const teamList = response.data.teams || [];
+
+        const formattedTeams = teamList.map((team) => ({
+          id: team.id,
+          name: team.name,
+          description: team.description,
+          tags: team.teamtag || [],
+          pageUrl: `/team/${team.id}`,
+        }));
+
+        setTeams(formattedTeams);
+      } catch (error) {
+        console.error("팀 목록 조회 실패:", error);
+      }
+    };
+
+    fetchTeams();
+  }, [isLoggedIn]);
 
   const handleCreateTeam = (newTeam) => {
-    const newTeamWithId = {
-      ...newTeam,
-      id: Date.now(),
-      pageUrl: `/team${teams.length + 1}`,
-    };
-    setTeams([...teams, newTeamWithId]);
+    setTeams([newTeam, ...teams]);
     setShowCreateTeamModal(false);
     setShowTeammateModal(true);
   };
@@ -49,27 +80,33 @@ const Home = () => {
           <span className="sub-slogan">
             당신의 팀을 더 가까이, 더 똑똑하게
           </span>
-          <div
-            className="join-section"
-            onClick={() => (window.location.href = "/login")}
-          >
-            <span className="join-text">지금 바로 가입하세요</span>
-            <img src={longArrow} alt="긴 화살표" className="join-arrow" />
-          </div>
+
+          {!isLoggedIn && (
+            <div
+              className="join-section"
+              onClick={() => (window.location.href = "/login")}
+            >
+              <span className="join-text">지금 바로 가입하세요</span>
+              <img src={longArrow} alt="긴 화살표" className="join-arrow" />
+            </div>
+          )}
         </div>
+
         <div className="main-img">
           <img src={mainImg} alt="메인 이미지" />
         </div>
       </div>
 
-      <div className="calendar-meeting-container">
-        <CalendarBox />
-        <div className="meeting-wrapper">
-          <MeetingList />
+      {isLoggedIn && (
+        <div className="calendar-meeting-container">
+          <CalendarBox />
+          <div className="meeting-wrapper">
+            <MeetingList />
+          </div>
         </div>
-      </div>
+      )}
 
-      <Myteam teams={teams} />
+      {isLoggedIn && <Myteam teams={teams} />}
     </div>
   );
 };
