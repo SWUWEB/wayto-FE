@@ -30,7 +30,7 @@
 .signup-header .logo {
   width: 100px;
   height: auto;
-  margin-bottom: -8px; 
+  margin-bottom: -8px;
 }
 
 .signup-header h1 {
@@ -42,7 +42,8 @@
 .signup-header p {
   font-size: 16px;
   color: #999;
-  margin: 3px;          
+  margin: 3px;
+  transform: translateX(13px);          
 }
 
 .signup-form {
@@ -77,8 +78,11 @@
   gap: 15px;
   align-items: center;
 }
+
 .email-box input { width: 190px; }
-.email-check {
+
+.email-check,
+.phone-check {
   width: 190px;
   height: 42px;
   padding: 10px;
@@ -89,8 +93,34 @@
   cursor: pointer;
 }
 
-.phone-box { display: flex; gap: 10px; align-items: center; }
-.phone-box input { width: 170px; }
+.phone-check {
+  flex: 0 0 160px;     
+  font-size: 13px;     
+}
+
+.email-check:disabled,
+.phone-check:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+.phone-box { 
+  display: flex; 
+  gap: 15px;     
+  align-items: center; 
+}
+
+.phone-box input:first-of-type {
+  margin-left: -7px; 
+}
+
+.phone-fixed {
+  font-size: 14px;
+  font-weight: normal;
+  color: #000;
+}
+
+.phone-box input { width: 190px; }
 
 .birth-box { display: flex; gap: 10px; align-items: center; }
 .birth-box select { width: 170px; }
@@ -124,3 +154,51 @@
 .signup-header h1 {
   transform: translateX(8px) !important;  
 }
+
+.global-error {
+  color: red;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.submit:disabled {
+  background-color: #444;
+  cursor: not-allowed;
+}
+
+.email-verify-box {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.email-verify-box input {
+  width: 430px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.email-verify {
+  width: 160px;
+  height: 42px;
+  padding: 10px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.email-verify:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+.email-box input { width: 140px; }
+.email-check { width: 155px; }
+.email-verify { width: 155px; }

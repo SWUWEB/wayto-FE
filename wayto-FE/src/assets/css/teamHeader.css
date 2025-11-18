@@ -1,0 +1,72 @@
+.teamHeader__team-header {
+  background-color: #fff;
+}
+
+.teamHeader__header-container {
+  display: flex;
+  padding: 60px;
+  position: relative;
+  background-color: #FBFBFB;
+  gap: 20px;
+}
+
+.teamHeader__logo {
+  width: 150px; 
+  height: 150px;
+  border-radius: 8px;
+  margin-right: 16px;
+  object-fit: cover;
+}
+
+.teamHeader__info {
+  flex: 1;
+}
+
+.teamHeader__team-name {
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #000;
+}
+
+.teamHeader__description {
+  font-size: 18px;
+  color: #575757;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+}
+
+.teamHeader__edit-icon {
+  position: absolute;
+  top: 85px;
+  right: 70px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.teamHeader__tab-container {
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 1px solid #979797;
+}
+
+.teamHeader__tab {
+  padding: 14px 30px;
+  text-align: center;
+  background: none;
+  border: none;
+  color: #B5B5B5;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.teamHeader__tab.teamHeader__active {
+  color: #000;
+  font-weight: 500;
+}
