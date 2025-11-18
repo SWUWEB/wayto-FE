@@ -50,7 +50,7 @@ const Home = () => {
           name: team.name,
           description: team.description,
           tags: team.teamtag || [],
-          pageUrl: `/team/${team.id}`,
+          pageUrl: `/team/${team.id}/meeting`,
         }));
 
         setTeams(formattedTeams);
