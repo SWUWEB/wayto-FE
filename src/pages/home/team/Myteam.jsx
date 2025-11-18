@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import TeamCard from './TeamCard';
 import '../../../assets/css/home.css';
-import CreateTeamModal from '../CreateTeamModal';
+//import CreateTeamModal from '../CreateTeamModal';
 
 const Myteam = ({ teams }) => {
+  console.log("teams =", teams);
   const handleNavigate = (url) => {
     window.open(url, '_blank');
   };
