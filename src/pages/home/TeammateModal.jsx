@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../../assets/css/createteam.css';
 import axios from 'axios';
 
-const TeammateModal = ({ isOpen, onClose }) => {
+const TeammateModal = ({ isOpen, onClose, teamId }) => {
   if (!isOpen) return null;
 
   const [searchInput, setSearchInput] = useState('');
@@ -39,6 +39,37 @@ const TeammateModal = ({ isOpen, onClose }) => {
 
   const handleRemoveMember = (user) => {
     setSelectedMembers(selectedMembers.filter(u => u.email !== user.email));
+  };
+
+  const handleSubmitMembers = async () => {
+    if (!teamId) {
+      alert("팀 ID가 존재하지 않습니다.");
+      return;
+    }
+
+    const token = localStorage.getItem('accessToken');
+
+    try {
+      for (const member of selectedMembers) {
+        await axios.post(
+          `https://waayto.com/api/teams/${teamId}/members`,
+          { email: member.email },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+          }
+        );
+      }
+
+      alert("팀원이 성공적으로 추가되었습니다!");
+      onClose();
+
+      window.location.reload();
+
+    } catch (error) {
+      console.error("팀원 추가 중 오류:", error);
+      alert("팀원 추가 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -91,7 +122,7 @@ const TeammateModal = ({ isOpen, onClose }) => {
         </div>
 
         <div className="modal-footer right-align">
-          <button onClick={onClose}>팀 생성하기</button>
+          <button onClick={handleSubmitMembers}>팀 생성하기</button>
         </div>
       </div>
     </div>
