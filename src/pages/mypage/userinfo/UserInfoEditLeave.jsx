@@ -1,15 +1,50 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "../../../assets/css/userinfoeditleave.css";
 
-const UserInfoEditLeave = ({ onClose, onConfirm, loading = false }) => {
+const UserInfoEditLeave = ({ onClose }) => {
   const [agree, setAgree] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!agree || loading) return;
-    onConfirm?.();
+
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        setLoading(false);
+        return;
+      }
+
+      const response = await axios.delete("https://waayto.com/api/users/me", {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        alert(response.data.message || "회원 탈퇴가 완료되었습니다.");
+
+        localStorage.removeItem("accessToken");
+        window.location.href = "/";
+      }
+    } catch (err) {
+      console.error("회원 탈퇴 실패:", err.response || err);
+      const msg =
+        err.response?.data?.message ||
+        "회원 탈퇴 중 문제가 발생했습니다. 다시 시도해주세요.";
+      alert(msg);
+    } finally {
+      setLoading(false);
+    }
+
   };
 
   return (
+
     <div className="leave-modal-overlay" role="dialog" aria-modal="true">
       <div className="leave-modal-box">
         <button

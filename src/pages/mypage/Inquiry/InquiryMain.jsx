@@ -24,7 +24,7 @@ export default function InquiryMain() {
         return;
       }
 
-      const response = await fetch("/api/inquiries", {
+      const response = await fetch("https://waayto.com/api/inquiries", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { startOfMonth, endOfMonth, eachDayOfInterval, format } from 'date-fns';
 import axios from 'axios';
+import { startOfMonth, endOfMonth, eachDayOfInterval, format } from 'date-fns';
 import Header from '../../components/Header';
 import '../../assets/css/calendar.css';
 import dropdownIcon from '../../assets/images/Dropdown.png';
@@ -8,48 +8,56 @@ import dropupIcon from '../../assets/images/Dropup.png';
 
 const Calendar = () => {
   const today = new Date();
+  const [year] = useState(today.getFullYear());
+  const [month] = useState(today.getMonth() + 1);
+  const [schedule, setSchedule] = useState({});
+  const [openIndexes, setOpenIndexes] = useState([]);
+
+  const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const monthStart = startOfMonth(today);
   const monthEnd = endOfMonth(today);
   const dates = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
-  const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-
-  const [schedule, setSchedule] = useState({});
-  const [openIndexes, setOpenIndexes] = useState([]);
-
   useEffect(() => {
-    axios.get('/api/calendar', {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+    const fetchCalendar = async () => {
+      try {
+        const token = localStorage.getItem('accessToken'); 
+        if (!token) return console.error('로그인이 필요합니다.');
+
+        const response = await axios.get('https://waayto.com/api/calendar', {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          params: { year, month }, 
+        });
+
+        const events = response.data.events || [];
+
+        // 날짜별로 일정 그룹화
+        const grouped = events.reduce((acc, event) => {
+          const dateStr = format(new Date(event.startAt), 'yyyy-MM-dd');
+          if (!acc[dateStr]) acc[dateStr] = [];
+          const timeStr = format(new Date(event.startAt), 'HH:mm');
+          acc[dateStr].push(`${timeStr} - ${event.title}`);
+          return acc;
+        }, {});
+
+        setSchedule(grouped);
+      } catch (err) {
+        console.error('캘린더 불러오기 실패:', err.response || err);
       }
-    })
-    .then((res) => {
-      const events = res.data.events;
+    };
 
-      /// 날짜별 그룹화
-      const grouped = events.reduce((acc, event) => {
-      const dateStr = format(new Date(event.startAt), 'yyyy.MM.dd');
-      if (!acc[dateStr]) acc[dateStr] = [];
-      // 시간 + 제목으로 저장
-      const timeStr = format(new Date(event.startAt), 'HH:mm');
-      acc[dateStr].push(`${timeStr} - ${event.title}`);
-      return acc;
-    }, {});
-
-      
-      setSchedule(grouped);
-    })
-    .catch((err) => {
-      console.error('캘린더 불러오기 실패:', err);
-    });
-  }, []);
+    fetchCalendar();
+  }, [year, month]);
 
   const toggleDropdown = (index) => {
-    setOpenIndexes(openIndexes.includes(index) ? openIndexes.filter(i => i !== index) : [...openIndexes, index]);
+    setOpenIndexes((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
   };
 
-  // 일정 개수에 따라 클래스 반환
   const getEventClass = (count) => {
     if (count === 1) return 'event-1';
     if (count === 2) return 'event-2';
