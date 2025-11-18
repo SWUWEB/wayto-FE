@@ -14,40 +14,55 @@ const Home = () => {
   const [teams, setTeams] = useState([]);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [showTeammateModal, setShowTeammateModal] = useState(false);
+  const [currentTeamId, setCurrentTeamId] = useState(null);
 
-  //팀 목록 연동
+  // 팀 목록 연동
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const response = await axios.get("/api/teams", {
-          withCredentials: true, 
-        });
+        const token = localStorage.getItem("accessToken"); 
 
+        if (!token) {
+          console.warn("Access Token이 없어 팀 목록을 조회할 수 없습니다. 로그인 상태를 확인하세요.");
+          return; 
+        }
+
+        const response = await axios.get("/api/teams", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        
         const teamList = response.data.teams || [];
 
         const formattedTeams = teamList.map((team) => ({
           id: team.id,
           name: team.name,
           description: team.description,
-          tags: team.teamtag || [], 
+          tags: team.teamtag || [],
           pageUrl: `/team/${team.id}`,
         }));
 
         setTeams(formattedTeams);
       } catch (error) {
-        console.error("팀 목록 조회 실패:", error);
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+            console.error("인증 실패: 다시 로그인해주세요.");
+        } else {
+            console.error("팀 목록 조회 실패:", error);
+        }
       }
     };
 
     fetchTeams();
   }, []);
 
-  
+
   const handleCreateTeam = (newTeam) => {
-  setTeams([ newTeam, ...teams]);
-  setShowCreateTeamModal(false);
-  setShowTeammateModal(true);
-};
+    setTeams((prev) => [newTeam, ...prev]);
+    setCurrentTeamId(newTeam.id); 
+    setShowCreateTeamModal(false);
+    setShowTeammateModal(true); 
+  };
 
   return (
     <div>
@@ -62,6 +77,7 @@ const Home = () => {
       <TeammateModal
         isOpen={showTeammateModal}
         onClose={() => setShowTeammateModal(false)}
+        teamId={currentTeamId} 
       />
 
       <div className="main-hero">
@@ -93,7 +109,7 @@ const Home = () => {
         </div>
       </div>
 
-      <Myteam teams={teams} />
+      <Myteam teams={teams.slice(0, 9)} />
     </div>
   );
 };

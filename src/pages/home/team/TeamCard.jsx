@@ -1,11 +1,18 @@
 import React from 'react';
-import '../../../assets/css/home.css'; 
+import { useNavigate } from 'react-router-dom';
+import '../../../assets/css/home.css';
 
-const TeamCard = ({ team, onNavigate }) => {
-  const name = team.name || "";
-  const description = team.description || "";
-  const tags = team.teamtag || [];
-  const pageUrl = team.pageUrl || `/team/${team.id}`;
+const TeamCard = ({ team, onNavigate }) => { 
+  const navigate = useNavigate();
+  
+  const name = team?.name || "제목 없음";
+  const description = team?.description || "설명 없음";
+  const pageUrl = team?.pageUrl || `/team/${team?.id}`;
+  const tags = Array.isArray(team?.tags) ? team.tags : []; 
+
+  const handleMove = () => {
+      navigate(pageUrl); 
+  };
 
   return (
     <div className="team-card">
@@ -18,7 +25,7 @@ const TeamCard = ({ team, onNavigate }) => {
         ))}
       </div>
 
-      <button className="team-button" onClick={() => onNavigate(pageUrl)}>
+      <button className="team-button" onClick={handleMove}>
         팀 페이지로 이동
       </button>
     </div>
