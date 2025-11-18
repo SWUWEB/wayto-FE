@@ -145,13 +145,11 @@
 .confirm-btn {
   background-color: #000;
   color: #fff;
-  font-weight: bold;
-  border: none;
   border-radius: 6px;
   padding: 0 16px;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
-  height: 44px;
+  height: 42px;
   white-space: nowrap;
 }
 

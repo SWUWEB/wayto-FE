@@ -21,7 +21,7 @@ const Signup = () => {
     phone2: "",
     phone3: "",
     gender: "비공개",
-    emailCode: "",
+    // [제거] emailCode: "",
   });
 
   const thisYear = new Date().getFullYear();
@@ -72,7 +72,7 @@ const Signup = () => {
   // 상태 관리
   const [emailCheck, setEmailCheck] = useState({ status: "idle", message: "" });
   const [phoneCheck, setPhoneCheck] = useState({ status: "idle", message: "" });
-  const [emailVerify, setEmailVerify] = useState({ status: "idle", message: "" });
+  // [제거] const [emailVerify, setEmailVerify] = useState({ status: "idle", message: "" });
 
   const emailChecking = emailCheck.status === "checking";
   const phoneChecking = phoneCheck.status === "checking";
@@ -103,8 +103,7 @@ const Signup = () => {
     if (name === "phone2" || name === "phone3")
       setPhoneCheck({ status: "idle", message: "" });
 
-    if (name === "emailCode")
-      setEmailVerify({ status: "idle", message: "" });
+    // [제거] if (name === "emailCode") setEmailVerify({ status: "idle", message: "" });
   };
 
   // 이메일 중복 확인
@@ -161,85 +160,8 @@ const Signup = () => {
     }
   };
 
-// ✔ 인증번호 전송 
-const handleSendEmailCode = async () => {
-  const email = buildEmail();
-
-  if (!EMAIL_REGEX.test(email)) {
-    return setEmailCheck({
-      status: "error",
-      message: "이메일 형식이 올바르지 않습니다.",
-    });
-  }
-
-  try {
-    setLoading(true);
-
-    const res = await fetch(`${API_BASE}/api/users/signup-sendnum`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      return setEmailCheck({
-        status: "error",
-        message: data.error || data.message,
-      });
-    }
-
-    setEmailCheck({
-      status: "success",
-      message: data.message,
-    });
-
-  } catch (e) {
-    setEmailCheck({
-      status: "error",
-      message: "이메일 발송에 실패했습니다.",
-    });
-  } finally {
-    setLoading(false);
-  }
-};
-
-  // ✔ 인증번호 검증 
-  const handleEmailCodeVerify = async () => {
-    const email = buildEmail();
-    const code = form.emailCode.trim();
-
-    if (!code) {
-      return setEmailVerify({ status: "error", message: "인증번호를 입력해주세요." });
-    }
-
-    try {
-      setLoading(true);
-
-      const res = await fetch(`${API_BASE}/api/users/verify-number`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          code,
-          type: "signup",
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        return setEmailVerify({ status: "error", message: data.message });
-      }
-
-      setEmailVerify({ status: "success", message: data.message });
-    } catch (e) {
-      setEmailVerify({ status: "error", message: "인증요청 실패" });
-    } finally {
-      setLoading(false);
-    }
-  };
+  // [제거] 인증번호 전송 (handleSendEmailCode) 함수 제거
+  // [제거] 인증번호 검증 (handleEmailCodeVerify) 함수 제거
 
   // 클라이언트 유효성 검사
   const validateClient = () => {
@@ -301,8 +223,8 @@ const handleSendEmailCode = async () => {
           setGlobalErr(data.message || "회원가입 실패");
         }
         return;
-      }
-
+      } 
+      
       if (data?.token) localStorage.setItem("accessToken", data.token);
       nav("/");
     } catch (err) {
@@ -343,19 +265,14 @@ const handleSendEmailCode = async () => {
       ? { color: "red" }
       : {};
 
-  const emailVerifyMsgStyle =
-    emailVerify.status === "success"
+  // [제거] emailVerifyMsgStyle 제거
+
+  const emailMsgStyle =
+    emailCheck.status === "available" // emailCheck.status === "success" 제거 (인증번호 전송 성공 상태가 사라짐)
       ? { color: "#1a7f37" }
-      : emailVerify.status === "error"
+      : emailCheck.status === "error"
       ? { color: "red" }
       : {};
-
-      const emailMsgStyle =
-  emailCheck.status === "available" || emailCheck.status === "success"
-    ? { color: "#1a7f37" }
-    : emailCheck.status === "error"
-    ? { color: "red" }
-    : {};
 
   return (
     <div className="page-wrapper">
@@ -411,14 +328,7 @@ const handleSendEmailCode = async () => {
               {emailChecking ? "확인 중…" : "중복 확인"}
             </button>
 
-            <button
-              type="button"
-              className="email-check"
-              onClick={handleSendEmailCode}
-              disabled={loading}
-            >
-              인증번호 전송
-            </button>
+            {/* [제거] 인증번호 전송 버튼 제거 */}
           </div>
 
           {(fieldErr.email || emailCheck.status !== "idle") && (
@@ -427,31 +337,7 @@ const handleSendEmailCode = async () => {
             </span>
           )}
 
-          {/* 인증번호 입력 */}
-          <label>이메일 인증번호 *</label>
-          <div className="email-verify-box">
-            <input
-              type="text"
-              name="emailCode"
-              placeholder="인증번호 입력"
-              value={form.emailCode}
-              onChange={onChange}
-            />
-            <button
-              type="button"
-              className="email-verify"
-              onClick={handleEmailCodeVerify}
-              disabled={loading}
-            >
-              인증번호 확인
-            </button>
-          </div>
-
-          {emailVerify.status !== "idle" && (
-            <span className="alert" style={emailVerifyMsgStyle}>
-              {emailVerify.message}
-            </span>
-          )}
+          {/* [제거] 이메일 인증번호 입력 섹션 전체 제거 */}
 
           {/* 비밀번호 */}
           <label>비밀번호 *</label>
