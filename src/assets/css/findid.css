@@ -94,7 +94,7 @@
   font-size: 16px;
   border-radius: 6px;
   cursor: pointer;
-  margin-top: 55px;
+  margin-top: 5px;
   width: 100%;
   display: block;
 }
@@ -115,4 +115,43 @@
   text-decoration: none;
   border-bottom: 0.5px solid #999;
   padding-bottom: 2px;
+}
+
+/* 전화번호 + 인증번호 입력 줄 */
+.phone-row,
+.verify-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.phone-row input,
+.verify-row input {
+  flex: 1;
+}
+
+.verify-btn,
+.confirm-btn {
+  background: #000;
+  color: #fff;
+  font-weight: bold;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.verify-btn:hover,
+.confirm-btn:hover {
+  background: #222;
+}
+
+.alert {
+  color: red;
+  font-size: 13px;
+  margin-top: -6px;
+  margin-bottom: 4px;
+  display: block;
 }
