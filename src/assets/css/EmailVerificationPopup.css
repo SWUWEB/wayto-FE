@@ -1,0 +1,84 @@
+.email-popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.email-popup {
+  width: 700px;
+  height: 500px;
+  background: #fff;
+  border-radius: 10px;
+  position: relative;
+  padding: 10px 30px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.popup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px; 
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.popup-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  overflow: hidden; 
+}
+
+.popup-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 0 10px 0; 
+}
+
+.popup-desc {
+  font-size: 14px;
+  color: #444;
+  margin: 0 0 15px 0; 
+}
+
+.popup-input {
+  width: 60%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.popup-btn {
+  width: 20%;
+  padding: 12px 0;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 0; 
+}
+
+.popup-content {
+    top: -40px;
+}

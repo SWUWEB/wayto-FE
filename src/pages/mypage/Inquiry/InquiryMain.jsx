@@ -10,15 +10,46 @@ export default function InquiryMain() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!title.trim() || !content.trim()) {
+      alert("제목과 내용을 모두 입력해 주세요.");
+      return;
+    }
+
     setLoading(true);
+
     try {
-      if (title.trim() && content.trim()) {
-        setSubmitted(true);
-      } else {
-        alert("제목과 내용을 모두 입력해 주세요.");
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("로그인 후 이용해 주세요.");
+        return;
       }
-    } catch {
-      alert("문의 전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+
+      const response = await fetch("https://waayto.com/api/inquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: title.trim(),
+          content: content.trim(),
+        }),
+      });
+
+      if (response.status === 201) {
+        const data = await response.json();
+        console.log("문의 등록 성공:", data);
+        setSubmitted(true);
+        setTitle("");
+        setContent("");
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error("문의 등록 실패:", errorData);
+        alert("문의 전송에 실패했습니다. 다시 시도해 주세요.");
+      }
+    } catch (error) {
+      console.error("오류 발생:", error);
+      alert("서버와의 연결 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
     } finally {
       setLoading(false);
     }
@@ -40,6 +71,7 @@ export default function InquiryMain() {
               placeholder="제목을 입력해 주세요."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              maxLength={200}
             />
 
             <textarea
@@ -47,6 +79,7 @@ export default function InquiryMain() {
               placeholder="내용을 입력해 주세요."
               value={content}
               onChange={(e) => setContent(e.target.value)}
+              maxLength={5000}
             />
 
             <div className="inquirymain-button-box">
@@ -67,8 +100,6 @@ export default function InquiryMain() {
               className="inquirymain-submit"
               onClick={() => {
                 setSubmitted(false);
-                setTitle("");
-                setContent("");
               }}
             >
               돌아가기

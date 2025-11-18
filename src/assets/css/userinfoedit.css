@@ -104,3 +104,17 @@
   position: static;
   margin-top: auto;
 }
+
+.userinfoedit-page select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("/src/assets/images/Editdropdown.png");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+
+  padding-right: 36px; 
+  box-sizing: border-box;
+}
