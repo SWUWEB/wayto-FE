@@ -1,0 +1,146 @@
+.member-list-section {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* 초대 박스 */
+.invite-box {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 28px;
+}
+
+.invite-box h3 {
+  margin-top: 6px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.invite-input-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.invite-input-wrapper input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 0px solid #d5d5d5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+}
+
+.invite-input-wrapper button {
+  background: #000;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 24px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.invite-input-wrapper button:hover {
+  background: #3867d6;
+}
+
+/* 팀원 목록 */
+.members-wrapper {
+  background: #f9f9f9;
+  padding: 22px;
+  border-radius: 8px;
+  margin-bottom: 28px;
+}
+
+.members-wrapper h3 {
+  margin-top: 8px;
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.member-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  border: 0px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: 0.15s;
+}
+
+.member-item:hover {
+  background: #f0f4ff;
+}
+
+/* 팀원 정보 */
+.member-item strong {
+  font-size: 16px;
+}
+
+.member-item span {
+  display: block;
+  font-size: 14px;
+  color: #666;
+}
+
+.role-tag {
+  margin-top: 4px;
+  font-size: 12px;
+  padding: 3px 8px;
+  background: #ddd;
+  border-radius: 8px;
+  display: inline-block;
+  color: #333;
+}
+
+/* 강퇴 버튼 */
+.kick-button {
+  background: #ff4d4d;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.kick-button:hover {
+  background: #e64444;
+}
+
+/* 본인 탈퇴 */
+.leave-section {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.leave-button {
+  background: #999;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.leave-button:hover {
+  background: #777;
+}

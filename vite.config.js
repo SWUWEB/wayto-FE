@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://waayto.com',
+        target: 'https://www.waayto.com',
         changeOrigin: true,
       },
     },

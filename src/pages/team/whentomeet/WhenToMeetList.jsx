@@ -11,20 +11,19 @@ const WhenToMeetList = () => {
     <TeamPageWrapper initialTab="웬투밋">
       <div className="when-to-meet-list-section">
         <div className="when-to-meet-list-inner">
-          {/* 완료된 웬투밋 섹션 */}
           <div className="when-to-meet-section-wrapper">
             <h2>완료된 웬투밋</h2>
             <div className="when-to-meet-grid">
               <WhenToMeet
-                title="이 칸은 웬투밋 제목입니다."
-                dateRange="2025년 11월 25일 ~ 12월 25일"
+                title="SWUWEB3기 프론트 회의"
+                dateRange="2025년 11월 10일 ~ 11월 10일"
                 location="DISCORD 회의 서버"
                 onEnter={() => console.log("입장")}
                 disabled={true}
               />
               <WhenToMeet
-                title="이 칸은 웬투밋 제목입니다."
-                dateRange="2025년 11월 25일 ~ 12월 25일"
+                title="SWUWEB3기 전체 회의"
+                dateRange="2025년 11월 11일 ~ 11월 11일"
                 location="DISCORD 회의 서버"
                 onEnter={() => console.log("입장")}
                 disabled={true}
@@ -32,34 +31,33 @@ const WhenToMeetList = () => {
             </div>
           </div>
 
-          {/* 현재 진행 중인 웬투밋 섹션 */}
           <div className="when-to-meet-section-wrapper">
             <h2>현재 진행 중인 웬투밋</h2>
             <div className="when-to-meet-grid">
               <WhenToMeet
-                title="이 칸은 웬투밋 제목입니다."
-                dateRange="2025년 11월 25일 ~ 12월 25일"
+                title="SWUWEB3기 프론트 회의"
+                dateRange="2025년 11월 24일 ~ 11월 24일"
                 location="DISCORD 회의 서버"
                 onEnter={() => console.log("입장")}
                 disabled={false}
               />
               <WhenToMeet
-                title="이 칸은 웬투밋 제목입니다."
-                dateRange="2025년 11월 25일 ~ 12월 25일"
+                title="SWUWEB3기 전체 회의"
+                dateRange="2025년 11월 25일 ~ 11월 25일"
                 location="DISCORD 회의 서버"
                 onEnter={() => console.log("입장")}
                 disabled={false}
               />
               <WhenToMeet
-                title="이 칸은 웬투밋 제목입니다."
-                dateRange="2025년 11월 25일 ~ 12월 25일"
+                title="SWUWEB3기 프론트 회의"
+                dateRange="2025년 12월 1일 ~ 12월 1일"
                 location="DISCORD 회의 서버"
                 onEnter={() => console.log("입장")}
                 disabled={false}
               />
               <WhenToMeet
-                title="이 칸은 웬투밋 제목입니다."
-                dateRange="2025년 11월 25일 ~ 12월 25일"
+                title="SWUWEB3기 전체 회의"
+                dateRange="2025년 12월 2일 ~ 12월 2일"
                 location="DISCORD 회의 서버"
                 onEnter={() => console.log("입장")}
                 disabled={false}

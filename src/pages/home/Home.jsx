@@ -16,8 +16,17 @@ const Home = () => {
   const [showTeammateModal, setShowTeammateModal] = useState(false);
   const [currentTeamId, setCurrentTeamId] = useState(null);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+  }, []);
+
   // 팀 목록 연동
   useEffect(() => {
+    if (!isLoggedIn) return; 
+    
     const fetchTeams = async () => {
       try {
         const token = localStorage.getItem("accessToken"); 
@@ -31,6 +40,7 @@ const Home = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          withCredentials: true,
         });
         
         const teamList = response.data.teams || [];
@@ -54,8 +64,7 @@ const Home = () => {
     };
 
     fetchTeams();
-  }, []);
-
+  }, [isLoggedIn]);
 
   const handleCreateTeam = (newTeam) => {
     setTeams((prev) => [newTeam, ...prev]);
@@ -89,27 +98,32 @@ const Home = () => {
           <span className="sub-slogan">
             당신의 팀을 더 가까이, 더 똑똑하게
           </span>
-          <div
-            className="join-section"
-            onClick={() => (window.location.href = "/login")}
-          >
-            <span className="join-text">지금 바로 가입하세요</span>
-            <img src={longArrow} alt="긴 화살표" className="join-arrow" />
-          </div>
+
+          {!isLoggedIn && (
+            <div
+              className="join-section"
+              onClick={() => (window.location.href = "/login")}
+            >
+              <span className="join-text">지금 바로 가입하세요</span>
+              <img src={longArrow} alt="긴 화살표" className="join-arrow" />
+            </div>
+          )}
         </div>
+
         <div className="main-img">
           <img src={mainImg} alt="메인 이미지" />
         </div>
       </div>
 
-      <div className="calendar-meeting-container">
-        <CalendarBox />
-        <div className="meeting-wrapper">
-          <MeetingList />
+      {isLoggedIn && (
+        <div className="calendar-meeting-container">
+          <CalendarBox />
+          <div className="meeting-wrapper">
+            <MeetingList />
+          </div>
         </div>
-      </div>
-
-      <Myteam teams={teams.slice(0, 9)} />
+      )}
+      {isLoggedIn && <Myteam teams={teams.slice(0, 9)} />}
     </div>
   );
 };

@@ -14,30 +14,31 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const WhenToMeetCreation = () => {
   const navigate = useNavigate(); 
-  const initialParticipants = ['김예원', '이름', '이름', '김희진', '이름', '이름', '문정윤', '이름', '이름', '이채영', '이름', '이름'];
+
+  const initialParticipants = ['김예원', '정지현', '최은기', '김희진', '고은수', '문정윤', '이채영'];
+  
   const [selectedParticipants, setSelectedParticipants] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const toggleParticipant = (name) => {
     setSelectedParticipants(prev =>
       prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
     );
   };
+
   const handleCreateVote = () => {
     navigate('/team/wentomeet/whentomeetvote'); 
   };
 
-  // 날짜/시간 상태
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  // 모달 상태
   const [timeModal, setTimeModal] = useState({ open: false, target: null });
-
   const startDateRef = useRef();
   const endDateRef = useRef();
 
-  // 시간 리스트 생성 (1시간 단위)
   const times = [];
   for (let h = 0; h < 24; h++) {
     const hh = String(h).padStart(2, '0');
@@ -54,7 +55,6 @@ const WhenToMeetCreation = () => {
     <TeamPageWrapper initialTab="웬투밋">
       <div className="w2m-creation-box">
         
-        {/* 제목 */}
         <div className="w2m-section w2m-align-left">
           <label className="w2m-label">웬투밋 제목</label>
           <div className="w2m-title-wrapper">
@@ -63,7 +63,6 @@ const WhenToMeetCreation = () => {
           </div>
         </div>
 
-        {/* 날짜 선택 */}
         <div className="w2m-section w2m-align-left">
           <label className="w2m-label">기간 설정</label>
           <div className="w2m-range-box">
@@ -93,12 +92,9 @@ const WhenToMeetCreation = () => {
           </div>
         </div>
 
-        {/* 시간 선택 */}
         <div className="w2m-section w2m-align-left">
           <label className="w2m-label">시간 설정</label>
           <div className="w2m-range-box">
-            
-            {/* 시작 시간 */}
             <div
               className="w2m-time-box"
               onClick={() =>
@@ -110,7 +106,6 @@ const WhenToMeetCreation = () => {
             >
               <input type="text" value={startTime} readOnly placeholder="시작 시간" />
               <img src={ClockIcon} alt="시계" />
-
               {timeModal.open && timeModal.target === 'start' && (
                 <div className="time-modal">
                   {times.map((t) => (
@@ -124,7 +119,6 @@ const WhenToMeetCreation = () => {
 
             <span className="w2m-range-dash">—</span>
 
-            {/* 종료 시간 */}
             <div
               className="w2m-time-box"
               onClick={() =>
@@ -136,7 +130,6 @@ const WhenToMeetCreation = () => {
             >
               <input type="text" value={endTime} readOnly placeholder="종료 시간" />
               <img src={ClockIcon} alt="시계" />
-
               {timeModal.open && timeModal.target === 'end' && (
                 <div className="time-modal">
                   {times.map((t) => (
@@ -147,30 +140,43 @@ const WhenToMeetCreation = () => {
                 </div>
               )}
             </div>
-
           </div>
         </div>
 
-        {/* 참여 대상 */}
         <div className="w2m-section w2m-align-left">
           <label className="w2m-label">참여 대상</label>
           <div className="w2m-search-box">
             <img src={SearchIcon} alt="검색" />
-            <input type="text" placeholder="이채영" />
+            <input
+              type="text"
+              placeholder="이름 검색"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
           <div className="w2m-participants">
-            {initialParticipants.map((name, idx) => (
-              <div key={idx} className="w2m-participant" onClick={() => toggleParticipant(name)}>
-                <img src={selectedParticipants.includes(name) ? CheckedBox : UncheckedBox} alt="체크박스" />
-                <span>{name}</span>
-              </div>
-            ))}
+            {initialParticipants
+              .filter(name => name.includes(searchTerm))
+              .map((name, idx) => (
+                <div
+                  key={idx}
+                  className="w2m-participant"
+                  onClick={() => toggleParticipant(name)}
+                >
+                  <img
+                    src={selectedParticipants.includes(name) ? CheckedBox : UncheckedBox}
+                    alt="체크박스"
+                  />
+                  <span>{name}</span>
+                </div>
+              ))}
           </div>
         </div>
 
         <div className="w2m-divider">&#8203;</div>
         <button className="w2m-create-button" onClick={handleCreateVote}>투표 생성하기</button>
       </div>
+
       <div className="bottom-box"></div>
     </TeamPageWrapper>
   );
