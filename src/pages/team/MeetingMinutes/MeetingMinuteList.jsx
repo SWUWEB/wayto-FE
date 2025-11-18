@@ -13,7 +13,7 @@ const MeetingMinuteList = () => {
   const fetchTeamMinutes = async () => {
     const token = localStorage.getItem("accessToken");
 
-    const res = await fetch(`/api/teams/${teamId}/minutes`, {
+    const res = await fetch(`https://waayto.com/api/teams/${teamId}/minutes`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
