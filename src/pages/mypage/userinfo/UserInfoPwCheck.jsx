@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/css/userinfopwcheck.css";
 import MyPageWrapper from "../MyPageWrapper";
@@ -12,6 +12,20 @@ function UserInfoPwCheck() {
   const [desc, setDesc] = useState(DEFAULT_MSG);
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userInfo");
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        setEmail(user.email || "");
+      } catch (err) {
+        console.error("userInfo 파싱 실패:", err);
+      }
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,20 +42,23 @@ function UserInfoPwCheck() {
     }
 
     try {
-      const response = await fetch("https://waayto.com/api/users/me/password-check", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",  
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ password }),
-      });
+      const response = await fetch(
+        "https://waayto.com/api/users/me/password-check",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ password }),
+        }
+      );
 
       const data = await response.json();
       console.log("응답:", response.status, data);
 
-      if (response.ok && data.valid) {  
+      if (response.ok && data.valid) {
         navigate("/mypage/userInfo/edit");
       } else {
         setIsError(true);
@@ -56,15 +73,18 @@ function UserInfoPwCheck() {
   };
 
   return (
-    <MyPageWrapper userName="회원 이름입니다.">
+    <MyPageWrapper>
       <div className="userinfopw-page">
         <form className="error-form" onSubmit={handleSubmit}>
           <p className="error-title">비밀번호 확인</p>
-          <p className="error-desc" style={isError ? { color: "#d21" } : undefined}>
+          <p
+            className="error-desc"
+            style={isError ? { color: "#d21" } : undefined}
+          >
             {desc}
           </p>
 
-          <input type="text" value="ABCD1234(아이디자동입력)" disabled />
+          <input type="text" value={email} disabled />
           <input
             type="password"
             placeholder="비밀번호를 입력해 주세요."
