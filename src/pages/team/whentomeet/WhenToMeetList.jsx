@@ -1,11 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TeamPageWrapper from ".././TeamPageWrapper";
 import WhenToMeet from "../../../components/WhenToMeet.jsx";
 import "../../../assets/css/WhenToMeetList.css";
 
 const WhenToMeetList = () => {
   const navigate = useNavigate();
+  const teamId = useParams().teamId;
 
   return (
     <TeamPageWrapper initialTab="웬투밋">
@@ -69,7 +70,7 @@ const WhenToMeetList = () => {
         <div className="create-button-wrapper">
           <button
             className="create-button"
-            onClick={() => navigate("/team/wentomeet/wentomeetcreation")}
+            onClick={() => navigate(`/team/${teamId}/wentomeet/wentomeetcreation`)}
           >
             웬투밋 생성하기
           </button>

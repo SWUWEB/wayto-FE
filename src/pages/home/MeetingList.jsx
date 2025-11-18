@@ -22,7 +22,7 @@ const MeetingList = () => {
   };
 
   const handleEnterClick = (minuteId) => {
-    navigate(`/minutes/${minuteId}`);
+    navigate(`/meetings/${minuteId}`);
   };
 
   useEffect(() => {
