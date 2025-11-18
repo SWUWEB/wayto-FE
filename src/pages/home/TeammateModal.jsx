@@ -17,7 +17,7 @@ const TeammateModal = ({ isOpen, onClose }) => {
     }
 
     try {
-      const response = await axios.get('https://www.waytomeet.site/api/teams/search', {
+      const response = await axios.get('https://www.waayto.com/api/teams/search', {
        params: { q: searchInput },
       headers: { Accept: 'application/json' }
     });

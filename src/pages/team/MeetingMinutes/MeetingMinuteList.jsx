@@ -1,63 +1,42 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TeamPageWrapper from "../TeamPageWrapper";
 import MeetingMinuteItem from "./MeetingMinuteItem";
 import "../../../assets/css/MeetingMinute.css";
+import { useQuery } from "@tanstack/react-query";
 
-// 🟦 더미 데이터 추가
-const dummyMeetings = [
-  {
-    id: 1,
-    title: "주간 스프린트 회의",
-    author: { name: "홍길동" },
-    createdAt: "2025-11-18T10:00:00Z",
-  },
-  {
-    id: 2,
-    title: "기획 회의",
-    author: { name: "김철수" },
-    createdAt: "2025-11-16T15:30:00Z",
-  },
-  {
-    id: 3,
-    title: "디자인 피드백 회의",
-    author: { name: "이영희" },
-    createdAt: "2025-11-14T11:10:00Z",
-  },
-  {
-    id: 4,
-    title: "백엔드 API 점검",
-    author: { name: "박민수" },
-    createdAt: "2025-11-10T09:20:00Z",
-  },
-  {
-    id: 5,
-    title: "테스트 자동화 논의",
-    author: { name: "최지훈" },
-    createdAt: "2025-11-05T13:45:00Z",
-  },
-  {
-    id: 6,
-    title: "운영 배포 전략 회의",
-    author: { name: "오하늘" },
-    createdAt: "2025-11-01T16:00:00Z",
-  },
-];
-
-const MeetingMinuteList = ({ teamId }) => {
+const MeetingMinuteList = () => {
+  const { teamId } = useParams();
   const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(4);
 
-  // 🟥 API 호출 주석 처리
-  /*
-  const { data: meetings = [], isLoading, isError, error } = useQuery(
-    ["teamMinutes", teamId],
-    () => fetchTeamMinutes(teamId)
-  );
-  */
+  const fetchTeamMinutes = async () => {
+    const token = localStorage.getItem("accessToken");
 
-  // 🟩 더미 데이터로 대체
-  const meetings = dummyMeetings;
+    const res = await fetch(`/api/teams/${teamId}/minutes`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("회의록 조회 실패");
+    }
+
+    const data = await res.json();
+    return data.minutes || [];
+  };
+
+  const {
+    data: meetings = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["teamMinutes", teamId],
+    queryFn: fetchTeamMinutes,
+    enabled: !!teamId,
+  });
 
   const handleView = (id) => {
     navigate(`/meetings/${id}`);
@@ -68,10 +47,35 @@ const MeetingMinuteList = ({ teamId }) => {
   };
 
   const handleCreateClick = () => {
-    navigate("/createMeetingMinute");
+    navigate(`/${teamId}/createMeetingMinute`);
+  };
+
+  const formatUtcString = (utcString) => {
+    if (!utcString) return "";
+
+    // 예: 2025-11-19T02:44:00.000Z
+    const [datePart, timePart] = utcString.split("T");
+    const [year, month, day] = datePart.split("-");
+    const [hh, mm] = timePart.split(":");
+
+    // 오전/오후 표시
+    const hourNum = Number(hh);
+    const ampm = hourNum < 12 ? "오전" : "오후";
+
+    // 시 표시(12시간제로 변환)
+    let displayHour = hourNum % 12;
+    if (displayHour === 0) displayHour = 12;
+
+    return `${year}.${month}.${day} ${ampm} ${String(displayHour).padStart(
+      2,
+      "0"
+    )}:${mm}`;
   };
 
   const visibleMeetings = meetings.slice(0, visibleCount);
+
+  if (isLoading) return <div>불러오는 중...</div>;
+  if (error) return <div>회의록을 불러오지 못했습니다.</div>;
 
   return (
     <TeamPageWrapper initialTab="회의록">
@@ -84,15 +88,25 @@ const MeetingMinuteList = ({ teamId }) => {
         </div>
 
         <div className="MML__meetingList">
-          {visibleMeetings.map(({ id, title, author, createdAt }) => (
-            <MeetingMinuteItem
-              key={id}
-              title={title}
-              attendees={author?.name || "작성자 정보 없음"}
-              date={new Date(createdAt).toLocaleString()}
-              onView={() => handleView(id)}
-            />
-          ))}
+          {visibleMeetings.map(({ id, title, attendees, meetingDate }) => {
+            const attendeeNames =
+              attendees && attendees.length > 0
+                ? attendees
+                    .split(",")
+                    .map((name) => name.trim())
+                    .join(", ")
+                : "작성자 정보 없음";
+
+            return (
+              <MeetingMinuteItem
+                key={id}
+                title={title}
+                attendees={attendeeNames}
+                date={formatUtcString(meetingDate)}
+                onView={() => handleView(id)}
+              />
+            );
+          })}
         </div>
 
         {visibleCount < meetings.length && (

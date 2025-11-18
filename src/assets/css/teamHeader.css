@@ -70,3 +70,30 @@
   color: #000;
   font-weight: 500;
 }
+
+/* 태그 리스트 전체 */
+.teamHeader__tag-list {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+/* 태그 스타일 */
+.teamHeader__tag {
+  font-size: 13px;
+  padding: 4px 8px;
+  border: 1px solid #d1d1d1;
+  border-radius: 24px;
+  background-color: #f7f7f7;
+  color: #555;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* # 자동으로 앞에 붙이기 */
+.teamHeader__tag::before {
+  content: "#";
+  margin-right: 3px;
+  color: #888;
+}

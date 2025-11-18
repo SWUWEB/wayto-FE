@@ -34,17 +34,14 @@ function App() {
           <Route path="/mypage/userInfo/edit" element={<UserInfoEdit />} />
           <Route path="/mypage/Inquiry" element={<InquiryMain />} />
 
-          <Route path="/meeting-minutes" element={<MeetingMinuteList />} />
-          <Route path="/team" element={<Navigate to="/team/meeting" replace />} />
-          <Route path="/team/meeting" element={<MeetingMinuteList />} />
-          <Route path="/team/wentomeet" element={<WhenToMeetList />} />
-          <Route path="/team/wentomeet/wentomeetcreation" element={<WhenToMeetCreation />} />
-          <Route path="/team/wentomeet/whentomeetvote" element={<WhenToMeetVote />} />
-          <Route path="/team/members" element={<MemberList />} />
+          <Route path="/team" element={<Navigate to="/team/:teamId/meeting" replace />} />
+          <Route path="/team/:teamId/meeting" element={<MeetingMinuteList />} />
+          <Route path="/team/:teamId/wentomeet" element={<WhenToMeetList />} />
+          <Route path="/team/:teamId/wentomeet/wentomeetcreation" element={<WhenToMeetCreation />} />
+          <Route path="/team/:teamId/wentomeet/whentomeetvote" element={<WhenToMeetVote />} />
+          <Route path="/team/:teamId/members" element={<MemberList />} />
 
-          {/* <Route path="/team/members" element={<MemberManagementPage />} />  */}
-
-          <Route path="/createMeetingMinute" element={<CreateMeetingMinute />} />
+          <Route path="/:teamId/createMeetingMinute" element={<CreateMeetingMinute />} />
           <Route path="/meetings/:meeting_id" element={<MeetingMinuteView />} />
         </Routes>
       </div>

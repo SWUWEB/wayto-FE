@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -13,15 +13,23 @@ import Header from "../../../../components/Header";
 import MenuBar from "./MenuBar";
 import AttendeesField from "./AttendeesField";
 import { CustomHighlight } from "./CustomHighlight";
-import { formatKoreanDateTime, getDefaultDateTime } from "./dateTimeUtils";
+import { getDefaultDateTime } from "./dateTimeUtils";
 import backIcon from "../../../../assets/images/back-icon.svg";
 import "../../../../assets/css/CreateMeetingMinute.css";
 
 const CreateMeetingMinute = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { teamId } = useParams();
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+  const currentUserName = userInfo.name || "사용자";
+
+  // 수정 모드 확인
+  const editMode = location.state?.editMode || false;
+  const existingData = location.state?.meetingData || null;
 
   // State 관리
-  const [attendees, setAttendees] = useState(["이채영"]);
+  const [attendees, setAttendees] = useState([currentUserName || ""]);
   const [title, setTitle] = useState("");
   const [place, setPlace] = useState("");
   const [link, setLink] = useState("");
@@ -30,6 +38,34 @@ const CreateMeetingMinute = () => {
   const [meetingDate, setMeetingDate] = useState(defaultDate);
   const [startTime, setStartTime] = useState(defaultTime);
   const [endTime, setEndTime] = useState(defaultTime);
+
+  // 수정 모드일 때 기존 데이터로 초기화
+  useEffect(() => {
+    if (editMode && existingData) {
+      
+      setTitle(existingData.title || "");
+      setAttendees(existingData.attendees?.map(a => a.name) || [currentUserName]);
+      setPlace(existingData.place || "");
+      setLink(existingData.link || "");
+      
+      if (existingData.meetingDate) {
+        try {
+          const dateStr = existingData.meetingDate.split('T')[0];
+          setMeetingDate(dateStr);
+        } catch (e) {
+          console.error("날짜 파싱 오류:", e);
+        }
+      }
+
+      // startTime, endTime이 있다면 사용
+      if (existingData.startTime) {
+        setStartTime(existingData.startTime);
+      }
+      if (existingData.endTime) {
+        setEndTime(existingData.endTime);
+      }
+    }
+  }, [editMode, existingData, currentUserName]);
 
   // 에디터 설정
   const editor = useEditor({
@@ -46,12 +82,10 @@ const CreateMeetingMinute = () => {
       Color,
       CustomHighlight,
     ],
-    content: "<p>회의록을 작성해보세요.</p>",
+    content: editMode && existingData?.content 
+      ? existingData.content 
+      : "<p>회의록을 작성해보세요.</p>",
   });
-
-  const toISODateTime = (date, time) => {
-    return new Date(`${date}T${time}:00`).toISOString();
-  };
 
   const handleBack = () => {
     navigate(-1);
@@ -72,40 +106,60 @@ const CreateMeetingMinute = () => {
 
     const editorContent = editor.getHTML();
 
+    const attendeesString = attendees
+      .map(a => a.trim())
+      .filter(a => a)
+      .join(", ");
+
     const requestBody = {
-      teamId: 1,
+      teamId: Number(teamId),
       title: title || "새로운 회의록",
-      attendees: attendees.join(", "),
-      meetingDate: meetingDate,
+      attendees: attendeesString,
+      meetingDate: meetingDate, 
       startTime: startTime,
-      endTime: endTime,
+      endTime: endTime, 
       location: place,
       meetingLink: link,
       content: editorContent,
     };
 
     try {
-      const response = await fetch("https://waayto.com/api/minutes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
+      let response;
+      
+      if (editMode && existingData) {
+        // 수정 모드: PATCH 요청
+        response = await fetch(`https://www.waayto.com/api/minutes/${existingData.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(requestBody),
+        });
+      } else {
+        // 생성 모드: POST 요청
+        response = await fetch("https://waayto.com/api/minutes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(requestBody),
+        });
+      }
 
       if (!response.ok) {
         const error = await response.json();
-        console.error("API Error:", error);
-        alert("회의록 작성 중 오류가 발생했습니다.");
+        alert(editMode ? "회의록 수정 중 오류가 발생했습니다." : "회의록 작성 중 오류가 발생했습니다.");
         return;
       }
 
       const result = await response.json();
 
-      // 성공 시 상세 페이지 혹은 목록으로 이동
-      navigate(`/minutes/${result.minuteId}`, {
-        state: { created: true },
+      // 성공 시 상세 페이지로 이동
+      const meetingId = editMode ? existingData.id : result.minute.id;
+      navigate(`/meetings/${meetingId}`, {
+        state: { updated: editMode, created: !editMode },
       });
     } catch (err) {
       console.error("Network Error:", err);
@@ -125,7 +179,7 @@ const CreateMeetingMinute = () => {
             className="CMM__backIcon"
             onClick={handleBack}
           />
-          <h2>회의록 작성</h2>
+          <h2>{editMode ? "회의록 수정" : "회의록 작성"}</h2>
         </div>
 
         <div className="CMM_input">
@@ -141,7 +195,10 @@ const CreateMeetingMinute = () => {
           />
 
           {/* 참석자 */}
-          <AttendeesField attendees={attendees} setAttendees={setAttendees} />
+          <AttendeesField
+            attendees={attendees}
+            setAttendees={setAttendees}
+          />
 
           {/* 회의 날짜 */}
           <div className="CMM__field">
@@ -212,7 +269,7 @@ const CreateMeetingMinute = () => {
 
         <div className="CMM__submitWrapper">
           <button className="CMM__submitBtn" onClick={handleSubmit}>
-            회의록 작성 완료
+            {editMode ? "회의록 수정 완료" : "회의록 작성 완료"}
           </button>
         </div>
       </div>

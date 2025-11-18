@@ -8,7 +8,7 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
   const [description, setDescription] = useState('');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState([]);
-  const URL = "https://www.waytomeet.site/api/team";
+  const URL = "https://www.waayto.com/api/team";
 
 //팀 생성하기 연동
   const handleCreate = async () => {
