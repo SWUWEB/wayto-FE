@@ -1,15 +1,15 @@
-import React from "react";
-
 const AttendeesField = ({ attendees, setAttendees }) => {
   const handleAddAttendee = () => {
     const name = prompt("참석자 이름을 입력하세요:");
     if (name && name.trim()) {
-      setAttendees([...attendees, name.trim()]);
+      const newList = [...attendees, name.trim()];
+      setAttendees(newList);
     }
   };
 
   const handleRemoveAttendee = (indexToRemove) => {
-    setAttendees(attendees.filter((_, index) => index !== indexToRemove));
+    const newList = attendees.filter((_, index) => index !== indexToRemove);
+    setAttendees(newList);
   };
 
   return (
@@ -21,7 +21,7 @@ const AttendeesField = ({ attendees, setAttendees }) => {
             <span className="CMM__circle"></span>
             {name}
             {attendees.length > 1 && (
-              <button 
+              <button
                 className="CMM__removeAttendee"
                 onClick={() => handleRemoveAttendee(idx)}
                 title="참석자 제거"

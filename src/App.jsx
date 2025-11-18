@@ -14,6 +14,7 @@ import WhenToMeetVote from "./pages/team/whentomeet/WhenToMeetVote";
 import Calendar from "./pages/home/Calendar";
 import CreateMeetingMinute from "./pages/team/MeetingMinutes/CreateMeetingMinute/CreateMeetingMinute";
 import MeetingMinuteView from "./pages/team/MeetingMinutes/MeetingMinuteView";
+import MemberList from "./pages/team/MemberList/MemberList";
 import "./App.css";
 
 function App() {
@@ -33,17 +34,15 @@ function App() {
           <Route path="/mypage/userInfo/edit" element={<UserInfoEdit />} />
           <Route path="/mypage/Inquiry" element={<InquiryMain />} />
 
-          <Route path="/meeting-minutes" element={<MeetingMinuteList />} />
-          <Route path="/team" element={<Navigate to="/team/meeting" replace />} />
-          <Route path="/team/meeting" element={<MeetingMinuteList />} />
-          <Route path="/team/wentomeet" element={<WhenToMeetList />} />
-          <Route path="/team/wentomeet/wentomeetcreation" element={<WhenToMeetCreation />} />
-          <Route path="/team/wentomeet/whentomeetvote" element={<WhenToMeetVote />} />
+          <Route path="/team" element={<Navigate to="/team/:teamId/meeting" replace />} />
+          <Route path="/team/:teamId/meeting" element={<MeetingMinuteList />} />
+          <Route path="/team/:teamId/wentomeet" element={<WhenToMeetList />} />
+          <Route path="/team/:teamId/wentomeet/wentomeetcreation" element={<WhenToMeetCreation />} />
+          <Route path="/team/:teamId/wentomeet/whentomeetvote" element={<WhenToMeetVote />} />
+          <Route path="/team/:teamId/members" element={<MemberList />} />
 
-          {/* <Route path="/team/members" element={<MemberManagementPage />} />  */}
-
-          <Route path="/createMeetingMinute" element={<CreateMeetingMinute />} />
-          <Route path="/meeting-minute-view" element={<MeetingMinuteView />} />
+          <Route path="/:teamId/createMeetingMinute" element={<CreateMeetingMinute />} />
+          <Route path="/meetings/:meeting_id" element={<MeetingMinuteView />} />
         </Routes>
       </div>
     </Router>

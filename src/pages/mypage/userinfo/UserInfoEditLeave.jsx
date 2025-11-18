@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../../assets/css/userinfoeditleave.css";
 
-const UserInfoEditLeave = ({ onClose }) => {
+const UserInfoEditLeave = ({ onClose, userName }) => {
   const [agree, setAgree] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -57,7 +57,7 @@ const UserInfoEditLeave = ({ onClose }) => {
         </button>
 
         <h2>
-          <strong>OOO 회원님,</strong>
+          <strong>{userName} 회원님,</strong>
           <br />
           정말 탈퇴하시겠어요?
         </h2>
