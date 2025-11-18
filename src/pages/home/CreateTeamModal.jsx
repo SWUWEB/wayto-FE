@@ -7,8 +7,9 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState([]);
-  const URL = "https://www.waayto.com/api/team";
+  const [teamtag, setTeamtag] = useState([]);
+
+  const URL = "https://www.waayto.com/api/teams";
 
   const handleCreate = async () => {
     const token = localStorage.getItem('accessToken');
@@ -24,7 +25,7 @@ const CreateTeamModal = ({ isOpen, onClose, onCreate }) => {
         withCredentials: true,
       });
 
-      const createdTeam = response.data;
+      const createdTeam = response.data.team;
 
       const formattedTeam = {
         id: createdTeam.id,
