@@ -36,7 +36,7 @@ const CalendarBox = () => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        const response = await axios.get("https://www.waytomeet.site/api/calendar", {
+        const response = await axios.get("https://waayto.com/api/calendar", {
           params: { year, month },
           headers: {
             Accept: "application/json",

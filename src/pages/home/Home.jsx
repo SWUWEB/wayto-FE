@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Myteam from "./team/Myteam";
 import CalendarBox from "./CalendarBox";
@@ -8,22 +8,46 @@ import MeetingList from "./MeetingList";
 import "../../assets/css/home.css";
 import mainImg from "../../assets/images/waytomeet_main.png";
 import longArrow from "../../assets/images/long-arrow.png";
+import axios from "axios";
 
 const Home = () => {
   const [teams, setTeams] = useState([]);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [showTeammateModal, setShowTeammateModal] = useState(false);
 
-  const handleCreateTeam = (newTeam) => {
-    const newTeamWithId = {
-      ...newTeam,
-      id: Date.now(),
-      pageUrl: `/team${teams.length + 1}`,
+  //팀 목록 연동
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const response = await axios.get("/api/teams", {
+          withCredentials: true, 
+        });
+
+        const teamList = response.data.teams || [];
+
+        const formattedTeams = teamList.map((team) => ({
+          id: team.id,
+          name: team.name,
+          description: team.description,
+          tags: team.teamtag || [], 
+          pageUrl: `/team/${team.id}`,
+        }));
+
+        setTeams(formattedTeams);
+      } catch (error) {
+        console.error("팀 목록 조회 실패:", error);
+      }
     };
-    setTeams([...teams, newTeamWithId]);
-    setShowCreateTeamModal(false);
-    setShowTeammateModal(true);
-  };
+
+    fetchTeams();
+  }, []);
+
+  
+  const handleCreateTeam = (newTeam) => {
+  setTeams([ newTeam, ...teams]);
+  setShowCreateTeamModal(false);
+  setShowTeammateModal(true);
+};
 
   return (
     <div>
