@@ -18,7 +18,7 @@ const Header = ({ onCreateTeamClick = () => {} }) => {
     if (!token) return;
 
     try {
-      await axios.post("/api/users/logout", null, {
+      await axios.post("https://waayto.com/api/users/logout", null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

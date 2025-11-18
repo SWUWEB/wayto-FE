@@ -36,7 +36,7 @@ const Home = () => {
           return; 
         }
 
-        const response = await axios.get("/api/teams", {
+        const response = await axios.get("https://waayto.com/api/teams", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

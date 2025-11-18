@@ -29,7 +29,7 @@ const MeetingList = () => {
     const fetchMeetings = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const response = await axios.get("/api/minutes/recent", {
+        const response = await axios.get("https://waayto.com/api/minutes/recent", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

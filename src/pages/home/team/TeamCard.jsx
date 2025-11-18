@@ -7,7 +7,7 @@ const TeamCard = ({ team, onNavigate }) => {
   
   const name = team?.name || "제목 없음";
   const description = team?.description || "설명 없음";
-  const pageUrl = team?.pageUrl || `/team/${team?.id}`;
+  const pageUrl = team?.pageUrl || `/team/${team?.id}/meeting`;
   const tags = Array.isArray(team?.tags) ? team.tags : []; 
 
   const handleMove = () => {
